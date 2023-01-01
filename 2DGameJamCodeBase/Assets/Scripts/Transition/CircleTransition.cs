@@ -4,30 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CircleTransition : MonoBehaviour
+public class CircleTransition : Transition
 {
     public Transform player;
     
-    private Canvas _canvas;
-    private Image _blackScreen;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Image _blackScreen;
 
     private Vector2 _playerCanvasPos;
     
     private static readonly int RADIUS = Shader.PropertyToID("_Radius");
     private static readonly int CENTER_X = Shader.PropertyToID("_CenterX");
     private static readonly int CENTER_Y = Shader.PropertyToID("_CenterY");
-    
-    private void Awake()
-    {
-        _canvas = GetComponent<Canvas>();
-        _blackScreen = GetComponentInChildren<Image>();
-    }
 
-    private void Start()
+    public override void ExecuteCustomStartTransition()
     {
         DrawBlackScreen();
+        OpenBlackScreen();
     }
-
+    
+    public override void ExecuteCustomEndTransition()
+    {
+        DrawBlackScreen();
+        CloseBlackScreen();
+        StartCoroutine(Transition(1, 0.15f, 0,2.5f));
+    }
+    
     public void OpenBlackScreen()
     {
         StartCoroutine(Transition(2, 0, 1, 0));
