@@ -6,8 +6,6 @@ public class TransitionManager : MonoBehaviour
     [SerializeField] private ESceneTransition _startTransition;
     [SerializeField] private ESceneTransition _endTransition;
     
-    [SerializeField] private CircleTransition circleTransition;
-    
     [SerializeField] private GameObject[] setInactiveObjects;
     [SerializeField] private float duration;
 
