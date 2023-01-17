@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CircleTransition : Transition
+public class OpeningCircleTransition : Transition
 {
-    public Transform player;
+    [SerializeField] private Transform player;
     
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Image _blackScreen;
@@ -27,7 +27,6 @@ public class CircleTransition : Transition
     {
         DrawBlackScreen();
         CloseBlackScreen();
-        StartCoroutine(Transition(1, 0.15f, 0,2.5f));
     }
     
     public void OpenBlackScreen()
@@ -38,6 +37,7 @@ public class CircleTransition : Transition
     public void CloseBlackScreen()
     {
         StartCoroutine(Transition(2, 1, 0.15f,0));
+        StartCoroutine(Transition(1, 0.15f, 0,2.5f));
     }
 
     public void DrawBlackScreen()

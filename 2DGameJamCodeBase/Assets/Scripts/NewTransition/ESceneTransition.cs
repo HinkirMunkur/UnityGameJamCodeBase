@@ -1,6 +1,7 @@
 public enum ESceneTransition
 {
-    CircleHollowTransition = 1,
-    CircleTransition = 2,
-    SquareTransition = 3
+    ClosingCircleTransition = 1,
+    OpeningCircleTransition = 2,
+    CircleTransition = 3,
+    SquareTransition = 4
 }
