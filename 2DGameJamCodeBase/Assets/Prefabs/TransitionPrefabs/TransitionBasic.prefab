@@ -63,7 +63,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2837147524315898962}
-  - component: {fileID: 2837147524315898961}
+  - component: {fileID: 5390877655341259124}
   m_Layer: 0
   m_Name: TransitionManager
   m_TagString: Untagged
@@ -86,7 +86,7 @@ Transform:
   m_Father: {fileID: 2837147524927712684}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2837147524315898961
+--- !u!114 &5390877655341259124
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,13 +95,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2837147524315898960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f653efdfee27f0d4d80337846ff551b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bd3b7b1f2aaadc4c9e6abc6fd126112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startTransitionType: 3
-  _endTransitionType: 2
+  _startTransitionType: 1
+  _endTransitionType: 1
   setInactiveObjects: []
-  duration: 1
+  duration: 2
   transitionTypeHolder: {fileID: 2837147524984695177}
   blackScreenCanvas: {fileID: 2837147525157814873}
   startTransition: {fileID: 0}
