@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class ClosingCircleTransition : Transition
 {
@@ -17,31 +15,31 @@ public class ClosingCircleTransition : Transition
     private static readonly int CENTER_X = Shader.PropertyToID("_CenterX");
     private static readonly int CENTER_Y = Shader.PropertyToID("_CenterY");
 
-    public override void ExecuteCustomStartTransition()
+    public override void ExecuteCustomStartTransition(float duration)
     {
         DrawBlackScreen();
         CloseBlackScreen();
     }
     
-    public override void ExecuteCustomEndTransition()
+    public override void ExecuteCustomEndTransition(float duration)
     {
         DrawBlackScreen();
         OpenBlackScreen();
         
     }
     
-    public void OpenBlackScreen()
+    private void OpenBlackScreen()
     {
         StartCoroutine(Transition(2, 0, 1, 0));
     }
 
-    public void CloseBlackScreen()
+    private void CloseBlackScreen()
     {
         StartCoroutine(Transition(2, 1, 0.15f,0));
         StartCoroutine(Transition(1, 0.15f, 0,2.5f));
     }
 
-    public void DrawBlackScreen()
+    private void DrawBlackScreen()
     {
         var screenWidth = Screen.width;
         var screenHeight = Screen.height;
@@ -78,7 +76,7 @@ public class ClosingCircleTransition : Transition
         _blackScreen.rectTransform.sizeDelta = new Vector2(squareValue, squareValue);
     }
 
-    public IEnumerator Transition(float duration, float beginRadius, float endRadius, float delay)
+    private IEnumerator Transition(float duration, float beginRadius, float endRadius, float delay)
     {
         yield return new WaitForSeconds(delay);
         var mat = _blackScreen.material;

@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SquareTransition : Transition
 {
-    [SerializeField] private Animator animator;
-    public override void ExecuteCustomStartTransition()
+    public override void ExecuteCustomStartTransition(float duration)
     {
-        animator.Play("StartTransition");
-
+        blackBackground.enabled = true;
+        blackBackground.transform.DOScale(Vector3.zero, duration);
     }
     
-    public override void ExecuteCustomEndTransition()
+    public override void ExecuteCustomEndTransition(float duration)
     {
-        animator.Play("EndTransition");
+        blackBackground.transform.localScale = Vector3.zero;
+        blackBackground.enabled = true;
+        
+        blackBackground.transform.DOScale(Vector3.one, duration);
     }
 }

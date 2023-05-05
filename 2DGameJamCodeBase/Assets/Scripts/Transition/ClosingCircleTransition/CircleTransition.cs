@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpeningCircleTransition : Transition
+public class CircleTransition : Transition
 {
-    [SerializeField] private Transform player;
-    
     [SerializeField] private Canvas _canvas;
-    [SerializeField] private Image _blackScreen;
+    
+    [Header("Tracked Object Transform")]
+    [SerializeField] private Transform player = null;
 
     private Vector2 _playerCanvasPos;
     
@@ -17,30 +16,34 @@ public class OpeningCircleTransition : Transition
     private static readonly int CENTER_X = Shader.PropertyToID("_CenterX");
     private static readonly int CENTER_Y = Shader.PropertyToID("_CenterY");
 
-    public override void ExecuteCustomStartTransition()
+    public override void ExecuteCustomStartTransition(float duration)
     {
+        blackBackground.enabled = true;
+        
         DrawBlackScreen();
-        OpenBlackScreen();
+        OpenBlackScreen(duration);
     }
     
-    public override void ExecuteCustomEndTransition()
+    public override void ExecuteCustomEndTransition(float duration)
     {
+        blackBackground.enabled = true;
+        
         DrawBlackScreen();
-        CloseBlackScreen();
+        CloseBlackScreen(duration);
     }
     
-    public void OpenBlackScreen()
+    private void OpenBlackScreen(float duration)
     {
-        StartCoroutine(Transition(2, 0, 1, 0));
+        StartCoroutine(Transition(duration, 0, 1, 0));
     }
 
-    public void CloseBlackScreen()
+    private void CloseBlackScreen(float duration)
     {
-        StartCoroutine(Transition(2, 1, 0.15f,0));
-        StartCoroutine(Transition(1, 0.15f, 0,2.5f));
+        StartCoroutine(Transition(duration, 1, 0.15f,0));
+        StartCoroutine(Transition(duration/2, 0.15f, 0,2.5f));
     }
 
-    public void DrawBlackScreen()
+    private void DrawBlackScreen()
     {
         var screenWidth = Screen.width;
         var screenHeight = Screen.height;
@@ -70,17 +73,17 @@ public class OpeningCircleTransition : Transition
         }
 
         _playerCanvasPos /= squareValue;
-        var mat = _blackScreen.material;
+        var mat = blackBackground.material;
         
         mat.SetFloat(CENTER_X, _playerCanvasPos.x);
         mat.SetFloat(CENTER_Y, _playerCanvasPos.y);
-        _blackScreen.rectTransform.sizeDelta = new Vector2(squareValue, squareValue);
+        blackBackground.rectTransform.sizeDelta = new Vector2(squareValue, squareValue);
     }
 
-    public IEnumerator Transition(float duration, float beginRadius, float endRadius, float delay)
+    private IEnumerator Transition(float duration, float beginRadius, float endRadius, float delay)
     {
         yield return new WaitForSeconds(delay);
-        var mat = _blackScreen.material;
+        var mat = blackBackground.material;
         var time = 0f;
         while (time <= duration)
         {
@@ -92,5 +95,31 @@ public class OpeningCircleTransition : Transition
             yield return null;
         }
     }
+    
+#if UNITY_EDITOR
+    public override void SetTransitionReferences(Image blackBG)
+    {
+        base.SetTransitionReferences(blackBG);
+        _canvas = blackBG.GetComponentInParent<Canvas>();
+        
+        String name = "CircleTransitionCenterPoint";
+
+        GameObject createdObj = GameObject.Find(name);
+        
+        if (createdObj != null)
+        {
+            player = createdObj.transform;
+            return;
+        }
+
+        GameObject GO = new GameObject();
+        GO.transform.position = Vector3.zero;
+
+        GO.name = name;
+
+        player = GO.transform;
+    }
+    
+#endif
 
 }
