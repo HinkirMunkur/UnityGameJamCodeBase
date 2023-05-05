@@ -2,7 +2,7 @@ using System.Reflection;
 using UnityEngine;
 
 
-public class ManagerSceneController : MonoBehaviour
+public class ManagerSceneController : SingletonnPersistent<ManagerSceneController>
 {
     [SerializeField] private bool editMode;
     void Start()
@@ -14,17 +14,24 @@ public class ManagerSceneController : MonoBehaviour
         }
         else
         {
-            LevelController.Instance.LoadNextScene();
+            Destroy(this.gameObject);
+            LevelController.Instance.LoadNextLevel();
+           // if(GameSceneData.Instance.GetGameSceneTutorial() != 1)
+             //  LevelController.Instance.LoadMainMenu();
+            //else
+              //  LevelController.Instance.LoadNextScene();
         }
 
     }
-
+    
+#if MANAGER_SCENE_EDITOR
+    
     private void OnDestroy()
     {
         ClearLog();
     }
 
-    public void ClearLog()
+    private void ClearLog()
     {
         var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
         var type = assembly.GetType("UnityEditor.LogEntries");
@@ -34,58 +41,42 @@ public class ManagerSceneController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            PlayerPrefs.DeleteAll();
-        }
-        
         foreach(KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
         {
             if(Input.GetKeyDown(vKey))
             {
-                switch (vKey)
+                int keyCodeVal = (int)vKey;
+
+                if (keyCodeVal >= 49 || keyCodeVal <= 57)
                 {
-                    case KeyCode.Alpha1:
-                        if(1 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(1);
-                        break;
-                    case KeyCode.Alpha2:
-                        if(2 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(2);
-                        break;
-                    case KeyCode.Alpha3:
-                        if(3 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(3);
-                        break;
-                    case KeyCode.Alpha4:
-                        if(4 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(4);
-                        break;
-                    case KeyCode.Alpha5:
-                        if(5 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(5);
-                        break;
-                    case KeyCode.Alpha6:
-                        if(6 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(6);
-                        break;
-                    case KeyCode.Alpha7:
-                        if(7 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(7);
-                        break;
-                    case KeyCode.Alpha8:
-                        if(8 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(8);
-                        break;
-                    case KeyCode.Alpha9:
-                        if(9 < LevelController.Instance.GetTotalAmountOfLevel())
-                            LevelController.Instance.LoadLevelWithIndex(9);
-                        break;
+                    int num = keyCodeVal - 48;
                     
+                    if (num < LevelController.Instance.GetTotalAmountOfLevel())
+                    {
+                        LevelController.Instance.LoadLevelWithIndex(num);
+                    }
                 }
+                /*
+                else if (keyCodeVal == 275) // RIGHT ARROW
+                {
+                    if (LevelController.Instance.GetCurrentLevelIndex() + 1 < LevelController.Instance.GetTotalAmountOfLevel())
+                    {
+                        LevelController.Instance.LoadNextLevel();
+                    }
+                }
+                else if (keyCodeVal == 276) // LEFT ARROW
+                {
+                    if (LevelController.Instance.GetCurrentLevelIndex() - 1 > 0)
+                    {
+                        LevelController.Instance.LoadLevelWithIndex(LevelController.Instance.GetCurrentLevelIndex() - 1);
+                    }
+                }
+                */
+
             }
         }
  
     }
     
+#endif
 }

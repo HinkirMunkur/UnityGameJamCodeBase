@@ -2,15 +2,34 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : SingletonnPersistent<LevelController>
 {
-
     public void LoadLevelWithIndex(int levelIndex)
     {
         SceneManager.LoadScene(levelIndex);
     }
+    
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    
+    public void LoadTutorial()
+    {
+        SceneManager.LoadScene(1);
+    }
 
-    public void LoadNextScene()
+    public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void LoadCurrLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadSceneWithName(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
     
     public int GetTotalAmountOfLevel()
@@ -24,14 +43,14 @@ public class LevelController : SingletonnPersistent<LevelController>
         return path.Substring(0, path.Length - 6).Substring(path.LastIndexOf('/') + 1);
     }
 
-    public void LoadSceneAdditive(string sceneName)
+    public string GetScenePathWithIndex(int index)
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        return SceneUtility.GetScenePathByBuildIndex(index);
     }
 
-    public void UnLoadScene(string sceneName)
+    public int GetCurrentLevelIndex()
     {
-        SceneManager.UnloadSceneAsync(sceneName);
+        return SceneManager.GetActiveScene().buildIndex;
     }
 
 }
