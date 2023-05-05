@@ -5,6 +5,8 @@ using UnityEngine;
 public class ManagerSceneController : SingletonnPersistent<ManagerSceneController>
 {
     [SerializeField] private bool editMode;
+    private const string EditModeLevelIndex = "EDIT_MODE_LEVEL_INDEX";
+    
     void Start()
     {
         if (editMode)
@@ -15,11 +17,7 @@ public class ManagerSceneController : SingletonnPersistent<ManagerSceneControlle
         else
         {
             Destroy(this.gameObject);
-            LevelController.Instance.LoadNextLevel();
-           // if(GameSceneData.Instance.GetGameSceneTutorial() != 1)
-             //  LevelController.Instance.LoadMainMenu();
-            //else
-              //  LevelController.Instance.LoadNextScene();
+            LevelController.Instance.LoadLevelWithIndex(PlayerPrefs.GetInt(EditModeLevelIndex, 1));
         }
 
     }
