@@ -16,7 +16,7 @@ public class StateToClassDictionary
     public State stateClass;
 }
 
-public class StateMachine : MonoBehaviour, IContext
+public abstract class StateMachine : MonoBehaviour, IContext
 {
     [SerializeField] private List<StateToClassDictionary> mockStateDictionary;
     [SerializeField] private bool isDebugEnabled;

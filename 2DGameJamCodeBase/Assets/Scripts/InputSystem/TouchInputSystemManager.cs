@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class InputSystemManager : SingletonnPersistent<InputSystemManager>
+public class TouchInputSystemManager : SingletonnPersistent<TouchInputSystemManager>
 {
     public Action<Vector2> OnTouchBegin;
     public Action<Vector2> OnTouchMoved;

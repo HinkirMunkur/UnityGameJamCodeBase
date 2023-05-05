@@ -233,7 +233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2140111914558945523}
-  - component: {fileID: 2025267401047262186}
+  - component: {fileID: 8849095555200122926}
   m_Layer: 0
   m_Name: FSM
   m_TagString: Untagged
@@ -258,7 +258,7 @@ Transform:
   m_Father: {fileID: 2297112075470404783}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2025267401047262186
+--- !u!114 &8849095555200122926
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,7 +267,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3748332711616095532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 431781cdfcd79a24b8ca541c7a000da7, type: 3}
+  m_Script: {fileID: 11500000, guid: 77c9b98b69fdde74aa7b009779b6239b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mockStateDictionary:
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c24d71eee2bfd4caea4e7e1d06cfe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachine: {fileID: 2025267401047262186}
+  stateMachine: {fileID: 8849095555200122926}
 --- !u!1 &7691642470720184761
 GameObject:
   m_ObjectHideFlags: 0
