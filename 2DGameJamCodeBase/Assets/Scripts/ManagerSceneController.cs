@@ -1,7 +1,6 @@
 using System.Reflection;
 using UnityEngine;
 
-
 public class ManagerSceneController : SingletonnPersistent<ManagerSceneController>
 {
     [SerializeField] private bool editMode;
@@ -17,7 +16,7 @@ public class ManagerSceneController : SingletonnPersistent<ManagerSceneControlle
         else
         {
             Destroy(this.gameObject);
-            LevelController.Instance.LoadLevelWithIndex(PlayerPrefs.GetInt(EditModeLevelIndex, 1));
+            LevelController.Instance.LoadNextLevel();
         }
 
     }

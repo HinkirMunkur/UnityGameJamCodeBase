@@ -1,8 +1,6 @@
 using System.Collections;
 using EasyButtons;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TransitionManager : Singletonn<TransitionManager>
@@ -62,11 +60,11 @@ public class TransitionManager : Singletonn<TransitionManager>
         
         yield return new WaitForSecondsRealtime(endTransition.
             TransitionDuration);
-        
-       /*
-        if(sceneName != null)
+
+        if (sceneName != null)
+        {
             LevelController.Instance.LoadSceneWithName(sceneName);
-        */
+        }
     }
     
 #if UNITY_EDITOR
@@ -109,8 +107,8 @@ public class TransitionManager : Singletonn<TransitionManager>
                 }
             }
         }
-        
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
+        LevelController.Instance.SetCurrentSceneDirty();
     }
 
     private void SetDefault()
