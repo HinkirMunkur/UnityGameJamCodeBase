@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UIDialogueData", menuName = "ScriptableObjects/UIDialogueDataScriptableObject", order = 1)]
+[CreateAssetMenu(fileName = "UIDialogueData", menuName = "DialogueSO/UIDialogueDataScriptableObject", order = 1)]
 public class UIDialogue : Dialogue
 {
     [Header("UIDialogue Essential Values")] 

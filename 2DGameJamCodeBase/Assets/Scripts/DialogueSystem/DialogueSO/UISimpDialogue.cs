@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UISimpDialogueData", menuName = "ScriptableObjects/UISimpDialogueDataScriptableObject", order = 1)]
+[CreateAssetMenu(fileName = "UISimpDialogueData", menuName = "DialogueSO/UISimpDialogueDataScriptableObject", order = 1)]
 public class UISimpDialogue : Dialogue
 {
     [Header("UISimpDialogue Essential Values")] 

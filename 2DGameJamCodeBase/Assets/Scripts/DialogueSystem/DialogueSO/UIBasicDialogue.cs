@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UIDBasicialogueData", menuName = "ScriptableObjects/UIBasicDialogueDataScriptableObject", order = 1)]
+[CreateAssetMenu(fileName = "UIDBasicialogueData", menuName = "DialogueSO/UIBasicDialogueDataScriptableObject", order = 1)]
 public class UIBasicDialogue : Dialogue
 {
 
