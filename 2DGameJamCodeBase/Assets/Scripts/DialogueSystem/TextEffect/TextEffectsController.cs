@@ -35,8 +35,6 @@ public class TextEffectsController : Singletonn<TextEffectsController>
                 GlitchTextEffect(verts, charInfo);
             else if (textEffect == ETextEffects.LightGlitch)
                 LightGlitchTextEffect(verts, charInfo);
-            else if (textEffect == ETextEffects.LightGlitch2)
-                LightGlitch2TextEffect(verts, charInfo);
         }
 
         ChangeWorkingCopy(dialogueHolderText, textInfo);
@@ -162,17 +160,6 @@ public class TextEffectsController : Singletonn<TextEffectsController>
         {
             var orig = verts[charInfo.vertexIndex + j];
             verts[charInfo.vertexIndex + j] = orig + new Vector3(Mathf.Tan(Time.time * 2 + orig.x) * 0.01f * neg, Mathf.Tan(Time.time * 2 + orig.x) * 0.01f * neg, 0);
-        }
-    }
-    
-    private void LightGlitch2TextEffect(Vector3[] verts, TMP_CharacterInfo charInfo)
-    {
-        neg *= -1;
-
-        for (int j = 0; j < TMP_PRO_VERTICES; j++)
-        {
-            var orig = verts[charInfo.vertexIndex + j];
-            verts[charInfo.vertexIndex + j] = orig + new Vector3(Mathf.Tan(Time.time+ orig.x) * 0.001f * neg, Mathf.Tan(Time.time + orig.x) * 0.001f * neg, 0);
         }
     }
 

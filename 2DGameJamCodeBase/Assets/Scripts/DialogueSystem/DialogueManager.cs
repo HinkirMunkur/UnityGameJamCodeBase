@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using System;
-using System.Text;
 
 public class DialogueManager : Singletonn<DialogueManager>
 {
@@ -18,9 +17,6 @@ public class DialogueManager : Singletonn<DialogueManager>
     private int dialogueIndex = 0;
     private int maxSize;
 
-    private StringBuilder stringTextBuilder = new System.Text.StringBuilder();
-    private StringBuilder stringWordBuilder = new System.Text.StringBuilder();
-    
     private string word = String.Empty;
     private int wordCounter = 0;
 
@@ -97,7 +93,6 @@ public class DialogueManager : Singletonn<DialogueManager>
     {
         if (!realDialogue.overWrite[dialogueIndex])
         {
-            stringTextBuilder.Clear();
             activeDialogueHolder.dialogueHolderText.text = String.Empty;
         }
 
@@ -113,18 +108,14 @@ public class DialogueManager : Singletonn<DialogueManager>
 
         word = String.Empty;
         wordCounter = 0;
-
+        
         foreach (char letter in realDialogue.sentences[dialogueIndex])
         {
-            stringTextBuilder.Append(letter);
-            activeDialogueHolder.dialogueHolderText.text = stringTextBuilder.ToString();
-            
-            //activeDialogueHolder.dialogueHolderText.text += letter;
-    
+            activeDialogueHolder.dialogueHolderText.text += letter;
+
             if (letter != ' ')
             {
-                stringWordBuilder.Append(letter);
-                //word += letter;
+                word += letter;
                 
                 if (activeDialogueHolder.audioSource.loop == false)
                 {
@@ -138,33 +129,21 @@ public class DialogueManager : Singletonn<DialogueManager>
             }
             else
             {
-                word = stringWordBuilder.ToString();
-                
                 GeneralDialogueColorController.Instance.TryToAddColorToWord(word, wordCounter);
                 GeneralDialogueEffectController.Instance.TryToAddEffectToWord(word, wordCounter);
                 
                 if (GeneralDialogueImageController.Instance.TryToAddImage(word))
                 {
-                    stringTextBuilder.Append(GeneralDialogueImageController.Instance.
-                        AddImageAfterWord(activeDialogueHolder.dialogueHolderText, word, wordCounter));
-
-                    activeDialogueHolder.dialogueHolderText.text = stringTextBuilder.ToString();
-                    /*
                     activeDialogueHolder.dialogueHolderText.text += 
                         GeneralDialogueImageController.Instance.
                             AddImageAfterWord(activeDialogueHolder.dialogueHolderText, word, wordCounter);
-                            */
                 }
                 
                 wordCounter++;
-
-                stringWordBuilder.Clear();
                 word = String.Empty;
             }
 
         }
-        
-        word = stringWordBuilder.ToString();
         
         // Check the last word
         if (word != String.Empty)
@@ -174,21 +153,12 @@ public class DialogueManager : Singletonn<DialogueManager>
             
             if (GeneralDialogueImageController.Instance.TryToAddImage(word))
             {
-                stringTextBuilder.Append(GeneralDialogueImageController.Instance.
-                    AddImageAfterWord(activeDialogueHolder.dialogueHolderText, word, wordCounter));
-
-                activeDialogueHolder.dialogueHolderText.text = stringTextBuilder.ToString();
-                
-                /*
                 activeDialogueHolder.dialogueHolderText.text += 
                     GeneralDialogueImageController.Instance.
                         AddImageAfterWord(activeDialogueHolder.dialogueHolderText, word, wordCounter);
-                */
             } 
             
             wordCounter++;
-            
-            stringWordBuilder.Clear();
             word = String.Empty;
         }
 
@@ -210,6 +180,7 @@ public class DialogueManager : Singletonn<DialogueManager>
 
         OnEndDialogueActions?.Invoke();
         EndDialogueCustomActions();
+
     }
     
     /// <summary>

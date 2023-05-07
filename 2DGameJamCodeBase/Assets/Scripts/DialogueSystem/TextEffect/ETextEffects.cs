@@ -8,6 +8,5 @@ public enum ETextEffects
    Rage = 4,
    Glitch = 5,
    LightGlitch = 6,
-   Custom = 7,
-   LightGlitch2 = 8,
+   Custom = 7
 }
