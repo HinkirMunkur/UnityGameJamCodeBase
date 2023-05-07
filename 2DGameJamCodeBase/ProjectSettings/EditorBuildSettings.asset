@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ManagerScene.unity
     guid: edd502c17489ae14d87ee4bf90a2bc54
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/TransitionTest.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/DialogueSystemTest.unity
+    guid: 4bf9e237e37cf4e4b9f082d36883544e
   m_configObjects: {}

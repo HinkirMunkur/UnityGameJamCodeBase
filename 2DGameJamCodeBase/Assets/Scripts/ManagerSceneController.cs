@@ -4,6 +4,9 @@ using UnityEngine;
 public class ManagerSceneController : SingletonnPersistent<ManagerSceneController>
 {
     [SerializeField] private bool editMode;
+
+    public bool EditMode => editMode;
+    
     private const string EditModeLevelIndex = "EDIT_MODE_LEVEL_INDEX";
     
     void Start()
