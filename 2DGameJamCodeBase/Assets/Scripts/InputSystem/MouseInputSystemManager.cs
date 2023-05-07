@@ -7,7 +7,7 @@ public class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemMana
     //public Action<Vector2> OnMouseRightClicked;
     //public Action<Vector2> OnMouseScrollClicked;
     public Action<Vector2> OnMouseDragged;
-    public Action<Vector2> OnMouseRelease;
+    public Action<Vector2> OnMouseReleased;
     
     [SerializeField] protected bool enableInputListener = false;
     
@@ -23,7 +23,7 @@ public class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemMana
             }
             else if(Input.GetMouseButtonUp(0))
             {
-                OnMouseRelease?.Invoke(Input.mousePosition);
+                OnMouseReleased?.Invoke(Input.mousePosition);
             }
             else if (Input.GetMouseButton(0))
             {

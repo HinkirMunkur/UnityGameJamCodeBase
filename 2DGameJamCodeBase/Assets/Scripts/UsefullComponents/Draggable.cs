@@ -2,34 +2,36 @@ using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
-    private Vector2 startPosition;
+    private Vector3 currentPosition;
+    private bool isBeingDragged = false;
 
     private void Awake()
-    {
-        MouseInputSystemManager.Instance.OnMouseLeftClicked += OnDragStart;    
+    { 
         MouseInputSystemManager.Instance.OnMouseDragged += OnDrag;    
         MouseInputSystemManager.Instance.OnMouseReleased += OnDragEnd;    
     }
 
     private void OnDestroy() 
     {
-        MouseInputSystemManager.Instance.OnMouseLeftClicked -= OnDragStart;    
         MouseInputSystemManager.Instance.OnMouseDragged -= OnDrag;    
         MouseInputSystemManager.Instance.OnMouseReleased -= OnDragEnd;  
     }
 
-    public virtual void OnDragStart(Vector2 delta) 
+    public virtual void OnDrag(Vector2 mousePosition) 
     {
-        startPosition = delta;
+        RaycastHit2D ray = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (ray.collider != null || isBeingDragged) 
+        {
+            isBeingDragged = true;
+            currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            currentPosition.z = 0;
+            transform.position = currentPosition;
+        }
     }
 
-    public virtual void OnDrag(Vector2 delta) 
+    public virtual void OnDragEnd(Vector2 mousePosition) 
     {
-        transform.position = delta;
-    }
-
-    public virtual void OnDragEnd(Vector2 delta) 
-    {
-
+        isBeingDragged = false;
     }
 }
