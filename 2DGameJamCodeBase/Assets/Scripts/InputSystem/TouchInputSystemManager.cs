@@ -1,11 +1,15 @@
 using System;
 using UnityEngine;
 
-public class TouchInputSystemManager : InputSystemManager
+public class TouchInputSystemManager : SingletonnPersistent<TouchInputSystemManager>
 {
     public Action<Vector2> OnTouchBegin;
     public Action<Vector2> OnTouchMoved;
     public Action<Vector2> OnTouchEnd;
+    
+    [SerializeField] protected bool enableInputListener = false;
+    
+    public bool EnableInputListener => enableInputListener;
 
     private void Update()
     {
