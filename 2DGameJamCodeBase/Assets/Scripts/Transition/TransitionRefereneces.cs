@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.Serialization;
 
 public class TransitionRefereneces : Singletonn<TransitionRefereneces>
 {
@@ -9,7 +8,7 @@ public class TransitionRefereneces : Singletonn<TransitionRefereneces>
 }
 
 [Serializable]
-public class ESceneTransitionToTransition
+public struct ESceneTransitionToTransition
 {
     public ESceneTransition ESceneTransition;
     public Transition Transition;
