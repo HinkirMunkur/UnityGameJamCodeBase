@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
+    [SerializeField] private Camera camera;
+    [SerializeField] private LayerMask layer;
+
+    public Action OnDragFinished;
     private Vector3 currentPosition;
     private bool isBeingDragged = false;
+    private RaycastHit2D ray;
 
     private void Awake()
     { 
@@ -19,7 +25,7 @@ public class Draggable : MonoBehaviour
 
     public virtual void OnDrag(Vector2 mousePosition) 
     {
-        RaycastHit2D ray = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        ray = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, layer);
 
         if (ray.collider != null || isBeingDragged) 
         {
@@ -33,5 +39,6 @@ public class Draggable : MonoBehaviour
     public virtual void OnDragEnd(Vector2 mousePosition) 
     {
         isBeingDragged = false;
+        OnDragFinished?.Invoke();
     }
 }
