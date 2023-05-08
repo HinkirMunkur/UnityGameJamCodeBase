@@ -1,22 +1,24 @@
-using System;
 using UnityEngine;
 
 public class TestObject : MonoBehaviour
 {
-    [SerializeField] private DialogueTrigger dt;
+    [SerializeField] private Transform taskHolder;
+
+    private void Start()
+    {
+        Debug.Log("TASK STARTED");
+        
+        Executer.Instance.ExecuteTasks(taskHolder, () =>
+        {
+            Debug.Log("TASK FINISHED");
+        });
+    }
+
     private void Update()
     {
-        
-        
         if (Input.GetKeyDown(KeyCode.A))
         {
-            dt.TriggerDialogue();
+          //  taskHolder.ExecuteTasksOnce();
         }
     }
-
-    private void OnMouseDown()
-    {
-        Debug.Log("CLICK");
-    }
-
 }
