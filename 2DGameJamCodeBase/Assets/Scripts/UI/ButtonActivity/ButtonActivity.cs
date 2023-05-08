@@ -1,0 +1,21 @@
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine;
+
+[RequireComponent(typeof(Button))]
+public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
+{
+    [SerializeField] private Button button;
+
+    public void DeactivateButton()
+    {
+        button.interactable = false;
+    }
+
+    public void ActivateButton()
+    {
+        button.interactable = true;
+    }
+
+    public abstract void OnPointerClick(PointerEventData eventData);
+}

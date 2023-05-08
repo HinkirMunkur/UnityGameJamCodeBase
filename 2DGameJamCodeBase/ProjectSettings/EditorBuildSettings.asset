@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/ManagerScene.unity
     guid: edd502c17489ae14d87ee4bf90a2bc54
   - enabled: 1
-    path: Assets/Scenes/TransitionTest.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/MenuTemplates/MainMenu.unity
+    guid: 61ce04d0e2f24264080b58b1cde74830
   - enabled: 1
-    path: Assets/Scenes/DialogueSystemTest.unity
-    guid: 4bf9e237e37cf4e4b9f082d36883544e
+    path: Assets/Scenes/MenuTemplates/OptionMenu.unity
+    guid: 60030161c7d87854395e318295d3ca95
   - enabled: 1
-    path: Assets/Scenes/TEST.unity
-    guid: 7b6897e53c0a80143881a23ea88b6f05
+    path: Assets/Scenes/MenuTemplates/CreditMenu.unity
+    guid: ee92f5bbd3d06494db75ac93fd5abc70
   m_configObjects: {}
