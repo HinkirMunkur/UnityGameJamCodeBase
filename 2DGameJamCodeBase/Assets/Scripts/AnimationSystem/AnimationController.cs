@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using EasyButtons;
 using System;
@@ -37,10 +38,24 @@ public abstract class AnimationController<EAnimationType> : MonoBehaviour
         }
     }
 
-    public void PlayAnimation(EAnimationType animationType, int layer = -1, float normalizedTime = Mathf.NegativeInfinity)
+    public void PlayAnimation(EAnimationType animationType, int layer = -1, float normalizedTime = Mathf.NegativeInfinity, 
+        Action OnAnimationFinished = null)
     {
         currentAnimationType = animationType;
         animator.Play(animationTypeNameDictionary[animationType], layer, normalizedTime);
+
+        StartCoroutine(CheckUntilAnimationFinish(animationTypeNameDictionary[animationType], layer,
+            OnAnimationFinished));
+    }
+
+    private IEnumerator CheckUntilAnimationFinish(String animationName, int layerIndex, Action OnAnimationFinished)
+    {
+        while (!animator.GetCurrentAnimatorStateInfo(layerIndex).IsName(animationName))
+        {
+            yield return null;
+        }
+        
+        OnAnimationFinished?.Invoke();
     }
 
 #if UNITY_EDITOR
