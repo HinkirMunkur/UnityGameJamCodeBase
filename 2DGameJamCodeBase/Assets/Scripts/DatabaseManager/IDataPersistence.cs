@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /**
  * Classes who use the properties in the GameData class must
  * implement this interface and its function, save and load.

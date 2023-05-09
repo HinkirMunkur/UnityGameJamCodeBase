@@ -11,10 +11,6 @@ public class GameData
      Properties defined in this class should be public. */
     
     // Example: public int health;
-    public int a;
-    public int b;
-    public int c;
-
 
     /* Constructor:
      * Values defined in this constructor should be the initial values for
@@ -23,8 +19,5 @@ public class GameData
     public GameData()
     {
         // Example: this.health = 5;
-        a = 31;
-        b = 13;
-        c = 0;
     }
 }
