@@ -3,7 +3,7 @@ using System;
 
 public class Draggable : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera rayCamera;
     [SerializeField] private LayerMask layer;
 
     public Action OnDragFinished;
@@ -25,7 +25,7 @@ public class Draggable : MonoBehaviour
 
     public virtual void OnDrag(Vector2 mousePosition) 
     {
-        ray = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, layer);
+        ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, layer);
 
         if (ray.collider != null || isBeingDragged) 
         {

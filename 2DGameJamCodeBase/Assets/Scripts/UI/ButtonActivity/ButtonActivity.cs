@@ -18,4 +18,14 @@ public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
     }
 
     public abstract void OnPointerClick(PointerEventData eventData);
+    
+#if UNITY_EDITOR
+
+    protected void SetProperButton()
+    {
+        button = GetComponent<Button>();
+    }
+    
+#endif
+    
 }
