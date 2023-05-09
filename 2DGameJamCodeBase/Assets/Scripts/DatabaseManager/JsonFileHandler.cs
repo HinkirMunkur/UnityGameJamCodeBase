@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
@@ -83,8 +81,10 @@ public class JsonFileHandler
     private string EncryptDecrypt(string data)
     {
         string modifiedData = "";
+        
         for (int i = 0; i < data.Length; i++)
         {
+            // Use StringBuilder
             modifiedData += (char)(data[i] ^ _encryptionKeyword[i % _encryptionKeyword.Length]);
         }
 

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /**
  * This class will store properties that needs to be saved and loaded.
  * This file should remain empty and should only be filled when which
@@ -15,6 +11,9 @@ public class GameData
      Properties defined in this class should be public. */
     
     // Example: public int health;
+    public int a;
+    public int b;
+    public int c;
 
 
     /* Constructor:
@@ -24,6 +23,8 @@ public class GameData
     public GameData()
     {
         // Example: this.health = 5;
-
+        a = 31;
+        b = 13;
+        c = 0;
     }
 }

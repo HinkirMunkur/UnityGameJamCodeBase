@@ -7,7 +7,7 @@ public class Executer : SingletonnPersistent<Executer>
 {
     private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
 
-    public void ExecuteTasks(Transform taskHolder, Action isExecuteFinished = null)
+    public void Execute(Transform taskHolder, Action isExecuteFinished = null)
     {
         List<IExecuteable> continuingTasks = new List<IExecuteable>();
             
@@ -24,6 +24,10 @@ public class Executer : SingletonnPersistent<Executer>
             if (continuingTasks.Count > 0)
             {
                 StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+            }
+            else
+            {
+                isExecuteFinished?.Invoke();
             }
 
             return;
@@ -44,6 +48,10 @@ public class Executer : SingletonnPersistent<Executer>
         if (continuingTasks.Count > 0)
         {
             StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+        }
+        else
+        {
+            isExecuteFinished?.Invoke();
         }
     }
 

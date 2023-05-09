@@ -1,15 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
 public class DatabaseManager : SingletonnPersistent<DatabaseManager>
 {
-    [SerializeField]
-    private string _fileName;
+    [SerializeField] private string _fileName;
 
-    [SerializeField]
-    private bool _useEncryption;
+    [SerializeField] private bool _useEncryption;
 
     private GameData _gameData;
     private List<IDataPersistence> _dataPersistenceObjects;
