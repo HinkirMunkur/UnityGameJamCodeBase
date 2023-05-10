@@ -17,13 +17,6 @@ public class CameraaManager : Singletonn<CameraaManager>
     private void Awake()
     {
         cameraSystemDictionary = new Dictionary<ECameraSystem, ICameraTransition>();
-        
-        /*
-        CameraSystem<EGameCameraType> gameCamera = cameraSystemList[0].
-            GetComponent<CameraSystem<EGameCameraType>>();
-
-        cameraSystemDictionary.Add(gameCamera.ECameraSystem, gameCamera);
-        */
 
         ICameraTransition[] cameraSystems = cameraSystemHolder.GetComponentsInChildren<ICameraTransition>();
 
@@ -31,7 +24,6 @@ public class CameraaManager : Singletonn<CameraaManager>
         {
             cameraSystemDictionary.Add(cameraSystem.ECameraSystem, cameraSystem);
         }
-        
     }
 
     public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
