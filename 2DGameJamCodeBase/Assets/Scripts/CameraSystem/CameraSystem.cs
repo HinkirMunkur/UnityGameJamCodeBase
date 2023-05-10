@@ -3,7 +3,13 @@ using UnityEngine;
 using EasyButtons;
 using System;
 
-public abstract class CameraSystem<ECameraType> : MonoBehaviour
+public interface ICameraTransition
+{
+    public ECameraSystem ECameraSystem { get; }
+    public void SetCamera(Enum cameraType);
+}
+
+public abstract class CameraSystem<ECameraType> : MonoBehaviour, ICameraTransition where ECameraType : Enum
 {
     [SerializeField] private ECameraSystem eCameraSystem;
 
@@ -34,6 +40,8 @@ public abstract class CameraSystem<ECameraType> : MonoBehaviour
 
     public virtual void Awake()
     {
+        cameraTypeVirtualCameraDictionary = new Dictionary<ECameraType, VirtualCamera<ECameraType>>();
+        
         foreach (var cameraTypeVirtualCamera in cameraTypeVirtualCameraList)
         {
             cameraTypeVirtualCameraDictionary.Add(cameraTypeVirtualCamera.CameraType, 
@@ -45,11 +53,18 @@ public abstract class CameraSystem<ECameraType> : MonoBehaviour
         currentCameraType = initialCameraType;
         cameraTypeVirtualCameraDictionary[initialCameraType].gameObject.SetActive(true);
     }
-
+    
     public void SetCamera(ECameraType cameraType)
     {
         cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(false);
         currentCameraType = cameraType;
+        cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(true);
+    }
+    
+    public void SetCamera(Enum cameraType)
+    {
+        cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(false);
+        currentCameraType = (ECameraType)cameraType;
         cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(true);
     }
     
@@ -58,7 +73,7 @@ public abstract class CameraSystem<ECameraType> : MonoBehaviour
         return !EqualityComparer<ECameraType>.Default.Equals(val1 , val2);
     }
     
-    
+
 #if UNITY_EDITOR
 
     [Button]
@@ -88,6 +103,5 @@ public abstract class CameraSystem<ECameraType> : MonoBehaviour
     }
     
 #endif
-    
     
 }

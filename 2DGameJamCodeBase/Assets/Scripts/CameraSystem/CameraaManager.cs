@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using EasyButtons;
 using System;
 
 public enum ECameraSystem
@@ -11,69 +10,38 @@ public enum ECameraSystem
 
 public class CameraaManager : Singletonn<CameraaManager>
 {
-    [SerializeField] private Transform cameraSystemsHolder;
-    
-    [Serializable]
-    public class CameraSystemTypePair
-    {
-        public ECameraSystem ECameraSystem;
-        public CameraSystem<Enum> CameraSystem;
-
-        public CameraSystemTypePair(ECameraSystem eCameraSystem, CameraSystem<Enum> cameraSystem)
-        {
-            ECameraSystem = eCameraSystem;
-            CameraSystem = cameraSystem;
-        }
-    }
-
-    [SerializeField] private List<CameraSystemTypePair> cameraSystemTypePairList;
-    
-    private Dictionary<ECameraSystem, CameraSystem<Enum>> cameraSystemDictionary;
+    [SerializeField] private Transform cameraSystemHolder;
+        
+    private Dictionary<ECameraSystem, ICameraTransition> cameraSystemDictionary;
 
     private void Awake()
     {
-        foreach (var cameraSystemTypePair in cameraSystemTypePairList)
+        cameraSystemDictionary = new Dictionary<ECameraSystem, ICameraTransition>();
+        
+        /*
+        CameraSystem<EGameCameraType> gameCamera = cameraSystemList[0].
+            GetComponent<CameraSystem<EGameCameraType>>();
+
+        cameraSystemDictionary.Add(gameCamera.ECameraSystem, gameCamera);
+        */
+
+        ICameraTransition[] cameraSystems = cameraSystemHolder.GetComponentsInChildren<ICameraTransition>();
+
+        foreach (var cameraSystem in cameraSystems)
         {
-            cameraSystemDictionary.Add(cameraSystemTypePair.ECameraSystem, cameraSystemTypePair.CameraSystem);
+            cameraSystemDictionary.Add(cameraSystem.ECameraSystem, cameraSystem);
         }
+        
     }
 
     public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
     {
-        CameraSystem<Enum> cameraSystem = GetCameraSystem(eCameraSystem);
-        cameraSystem.SetCamera(eCameraType);
+        ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
+        cameraTransitionSystem.SetCamera(eCameraType);
     }
     
-    private CameraSystem<Enum> GetCameraSystem(ECameraSystem eCameraSystem)
+    private ICameraTransition GetCameraSystem(ECameraSystem eCameraSystem)
     {
         return cameraSystemDictionary[eCameraSystem];
     }
-    
-#if UNITY_EDITOR
-
-    [Button]
-    public void SetProperCameras()
-    {
-        if (cameraSystemTypePairList != null)
-        {
-            cameraSystemTypePairList.Clear();
-        }
-
-        cameraSystemTypePairList = new List<CameraSystemTypePair>();
-        
-        int childAmount = cameraSystemsHolder.childCount;
-
-        for (int i = 0; i < childAmount; i++)
-        {
-            //CameraSystem<Enum> cameraSystem = cameraSystemsHolder.GetChild(i).GetComponent<>();
-            
-            //cameraSystemTypePairList.Add(new CameraSystemTypePair(cameraSystem.ECameraSystem, cameraSystem));
-            //cameraSystem.SetProperCameras();
-        }
-        
-        
-        Debug.Log("CameraSystems Initialized");
-    }
-    
-#endif
 }

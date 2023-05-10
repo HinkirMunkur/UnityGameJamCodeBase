@@ -6,5 +6,4 @@ public enum EGameCameraType
 
 public class GameCameraSystem : CameraSystem<EGameCameraType>
 {
-   
 }
