@@ -13,7 +13,6 @@ public class TestObject : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             CameraaManager.Instance.SetCamera(ECameraSystem.GameCamSystem, EGameCameraType.Idle);
-  
         }
         else if(Input.GetKeyDown(KeyCode.S))
         {
