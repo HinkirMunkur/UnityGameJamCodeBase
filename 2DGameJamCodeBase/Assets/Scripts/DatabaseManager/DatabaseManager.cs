@@ -11,7 +11,6 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
     public PlayerDataHandler PlayerDataHandler => playerDataHandler;
 
     private GameDataHandler gameDataHandler;
-
     public GameDataHandler GameDataHandler => gameDataHandler;
 
     public override void Awake()
@@ -33,9 +32,9 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
 
     public void SaveData(RecordedDataHandler recordedDataHandler)
     {
-        if (!recordedDataHandler.RecordedData.IsDirty)
+        if (!recordedDataHandler.GetRecordedData().IsDirty)
         {
-            recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.RecordedData);
+            recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
         }
     }
     
@@ -43,9 +42,9 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
     {
         foreach (var recordedDataHandler in recordedDataHandlerList)
         {
-            if (!recordedDataHandler.RecordedData.IsDirty)
+            if (!recordedDataHandler.GetRecordedData().IsDirty)
             {
-                recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.RecordedData);
+                recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
             }
         }
     }
@@ -54,13 +53,13 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
     {
         foreach (var recordedDataHandler in recordedDataHandlerList)
         {
-            if (!recordedDataHandler.RecordedData.IsLoaded)
+            if (!recordedDataHandler.GetRecordedData().IsLoaded)
             {
-                RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData();
+                RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData(recordedDataHandler.GetRecordedData());
 
                 if (recordedData != null)
                 {
-                    recordedDataHandler.RecordedData = recordedData;
+                    recordedDataHandler.SetRecordedData(recordedData);
                 }
             }
         }
@@ -68,13 +67,13 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
 
     public void LoadData(RecordedDataHandler recordedDataHandler)
     {
-        if (!recordedDataHandler.RecordedData.IsLoaded)
+        if (!recordedDataHandler.GetRecordedData().IsLoaded)
         {
-            RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData();
+            RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData(recordedDataHandler.GetRecordedData());
 
             if (recordedData != null)
             {
-                recordedDataHandler.RecordedData = recordedData;
+                recordedDataHandler.SetRecordedData(recordedData);
             }
         }
     }

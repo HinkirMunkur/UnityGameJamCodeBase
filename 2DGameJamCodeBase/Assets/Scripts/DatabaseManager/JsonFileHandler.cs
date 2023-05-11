@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Text;
+using Unity.VisualScripting;
 
 public class JsonFileHandler
 {
@@ -21,7 +22,7 @@ public class JsonFileHandler
         stringBuilder = new StringBuilder();
     }
 
-    public RecordedData LoadData()
+    public RecordedData LoadData(RecordedData recordedData)
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         
@@ -42,11 +43,16 @@ public class JsonFileHandler
                 }
 
                 // If encryption is checked decrypt the data before converting to GameData.
-                dataToLoad = EncryptDecrypt(dataToLoad);
+
+                if (_useEncryption)
+                {
+                    dataToLoad = EncryptDecrypt(dataToLoad);
+                }
 
                 // Convert from JSON to data.
                 // LOAD PROBLEM HERE
-                loadedData = JsonUtility.FromJson<RecordedData>(dataToLoad);
+                
+                loadedData = (RecordedData)JsonUtility.FromJson(dataToLoad, recordedData.GetType());
             }
             catch (Exception e)
             {

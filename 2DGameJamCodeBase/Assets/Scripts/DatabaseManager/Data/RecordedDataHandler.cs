@@ -1,29 +1,16 @@
 using UnityEngine;
 
-public class RecordedDataHandler
+public abstract class RecordedDataHandler
 {
     protected JsonFileHandler jsonFileHandler;
     public JsonFileHandler JsonFileHandler => jsonFileHandler;
 
-    protected RecordedData recordedData;
+    public abstract RecordedData GetRecordedData();
 
-    public RecordedData RecordedData
-    {
-        get
-        {
-            //recordedData.IsLoaded = true;
-            return recordedData;
-        }
-        set
-        {
-            //recordedData.IsDirty = true;
-            recordedData = value;
-        }
-    }
+    public abstract void SetRecordedData(RecordedData recordedData);
 
-    public RecordedDataHandler(string dataFileName, RecordedData recordedData,  bool useEncryption)
+    public RecordedDataHandler(string dataFileName,  bool useEncryption)
     {
-        this.recordedData = recordedData;
         jsonFileHandler = new JsonFileHandler(Application.persistentDataPath, dataFileName, useEncryption);
     }
 }

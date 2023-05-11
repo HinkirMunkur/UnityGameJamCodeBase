@@ -2,10 +2,10 @@
 [System.Serializable]
 public class PlayerRecordedData : RecordedData
 {
-    public int playerHealt;
-    
+    public int PlayerHealt;
+
     public PlayerRecordedData() : base()
     {
-        playerHealt = 100;
+        PlayerHealt = 100;
     }
 }
