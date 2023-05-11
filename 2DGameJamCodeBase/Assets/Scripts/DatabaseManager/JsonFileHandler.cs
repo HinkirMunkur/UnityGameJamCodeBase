@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.IO;
+using System.Text;
 
 public class JsonFileHandler
 {
@@ -9,22 +10,29 @@ public class JsonFileHandler
     private bool _useEncryption = false;
     private readonly string _encryptionKeyword = "malgur";
 
+    private StringBuilder stringBuilder;
+
     public JsonFileHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
         _dataDirPath = dataDirPath;
         _dataFileName = dataFileName;
-        _useEncryption = useEncryption; 
+        _useEncryption = useEncryption;
+
+        stringBuilder = new StringBuilder();
     }
 
-    public GameData LoadData()
+    public RecordedData LoadData()
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
-        GameData loadedData = null;
+        
+        RecordedData loadedData = null;
+        
         if (File.Exists(fullPath))
         {
             try
             {
                 string dataToLoad = "";
+                
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
                     using (StreamReader reader = new StreamReader(stream))
@@ -37,19 +45,22 @@ public class JsonFileHandler
                 dataToLoad = EncryptDecrypt(dataToLoad);
 
                 // Convert from JSON to data.
-                loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                // LOAD PROBLEM HERE
+                loadedData = JsonUtility.FromJson<RecordedData>(dataToLoad);
             }
             catch (Exception e)
             {
                 Debug.LogError("Error occured to file: " + fullPath + "\n" + e);
             }
         }
+        
         return loadedData;
     }
 
-    public void SaveData(GameData data)
+    public void SaveData(RecordedData data)
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
+        
         try
         {
             // Create the directory if it does not exist.
@@ -80,14 +91,17 @@ public class JsonFileHandler
 
     private string EncryptDecrypt(string data)
     {
-        string modifiedData = "";
+        //string modifiedData = "";
+
+        stringBuilder.Clear();
         
         for (int i = 0; i < data.Length; i++)
         {
-            // Use StringBuilder
-            modifiedData += (char)(data[i] ^ _encryptionKeyword[i % _encryptionKeyword.Length]);
+            stringBuilder.Append((char)(data[i] ^ _encryptionKeyword[i % _encryptionKeyword.Length]));
+            //modifiedData += (char)(data[i] ^ _encryptionKeyword[i % _encryptionKeyword.Length]);
         }
 
-        return modifiedData;
+        return stringBuilder.ToString();
+        //return modifiedData;
     }
 }
