@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad0e4a9c058efd489c595c8321bcf6d, type: 3}
+  m_Name: DialogueSystemTest
+  m_EditorClassIdentifier: 
+  sentences:
+  - Hello, There
+  - Hi ?!
+  - Would you make a deal?
+  characterCounts: 000000000100000000000000
+  defOverWrites: 0
+  defTextWriteSpeeds:
+  - 0.1
+  - 0.1
+  defTextAudios:
+  - {fileID: 8300000, guid: 98ab0bee077719d459c6f07ca3d8c55a, type: 3}
+  - {fileID: 8300000, guid: cb699f9f47b532c48bc8edaddfdf29c6, type: 3}
+  defTextEffects: 0600000002000000
+  defDiffColor:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  textWriteSpeeds: []
+  textAudios: []
+  textEffects: []
+  overWrites: []
+  diffColor: []
+  WordColorIndices: []
+  WordEffectIndices:
+  - id: 0
+    diffWordEffectDics:
+    - wordId: 00000000
+      textEffect: 1
+  - id: 2
+    diffWordEffectDics:
+    - wordId: 04000000
+      textEffect: 3

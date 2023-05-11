@@ -23,9 +23,10 @@ public class TriggerKey : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             DialogueTrigger.Instance.TriggerDialogue();
-
+        }
     }
     
     private void HolderOnStartDialogueActions()

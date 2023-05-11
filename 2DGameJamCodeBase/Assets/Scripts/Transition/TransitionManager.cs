@@ -1,9 +1,11 @@
+using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 using EasyButtons;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class TransitionManager : Singletonn<TransitionManager>
+public sealed class TransitionManager : Singletonn<TransitionManager>
 {
     [SerializeField] private ESceneTransition _startTransitionType;
     [SerializeField] private ESceneTransition _endTransitionType;
@@ -108,7 +110,7 @@ public class TransitionManager : Singletonn<TransitionManager>
             }
         }
 
-        LevelController.Instance.SetCurrentSceneDirty();
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
     }
 
     private void SetDefault()

@@ -99,6 +99,8 @@ public abstract class CameraSystem<ECameraType> : MonoBehaviour, ICameraTransiti
             }
         }
         
+        UnityEditor.EditorUtility.SetDirty(this);
+        
         Debug.Log("Cameras Initialized");
     }
     

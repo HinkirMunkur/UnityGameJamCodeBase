@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemManager>
+public sealed class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemManager>
 {
     public Action<Vector2> OnMouseLeftClicked;
     //public Action<Vector2> OnMouseRightClicked;
@@ -9,7 +9,7 @@ public class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemMana
     public Action<Vector2> OnMouseDragged;
     public Action<Vector2> OnMouseReleased;
     
-    [SerializeField] protected bool enableInputListener = false;
+    [SerializeField] private bool enableInputListener = false;
     
     public bool EnableInputListener => enableInputListener;
 

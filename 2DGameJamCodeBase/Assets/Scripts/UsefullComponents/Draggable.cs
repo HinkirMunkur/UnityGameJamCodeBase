@@ -25,7 +25,8 @@ public class Draggable : MonoBehaviour
 
     public virtual void OnDrag(Vector2 mousePosition) 
     {
-        ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, layer);
+        ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 
+            Mathf.Infinity, layer);
 
         if (ray.collider != null || isBeingDragged) 
         {

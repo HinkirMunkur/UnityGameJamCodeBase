@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DataSOManager : SingletonnPersistent<DataSOManager>
+public sealed class DataSOManager : SingletonnPersistent<DataSOManager>
 {
     [SerializeField] private GameDataSO gameDataSO;
 

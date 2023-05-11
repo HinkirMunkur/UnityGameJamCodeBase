@@ -4,11 +4,11 @@ using System;
 
 public enum ECameraSystem
 {
-    GameCamSystem,
-    Player2CamSystem,
+    GameCameraSystem,
+    Player2CameraSystem,
 }
 
-public class CameraaManager : Singletonn<CameraaManager>
+public sealed class CameraaManager : Singletonn<CameraaManager>
 {
     [SerializeField] private Transform cameraSystemHolder;
         

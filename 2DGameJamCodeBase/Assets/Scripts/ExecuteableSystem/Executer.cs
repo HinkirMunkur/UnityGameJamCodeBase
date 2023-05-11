@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class Executer : SingletonnPersistent<Executer>
+public sealed class Executer : SingletonnPersistent<Executer>
 {
     private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
 

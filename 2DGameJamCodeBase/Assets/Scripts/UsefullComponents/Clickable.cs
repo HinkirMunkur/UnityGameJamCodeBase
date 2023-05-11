@@ -5,6 +5,7 @@ public class Clickable : MonoBehaviour
 {
     [SerializeField] private Camera rayCamera;
     [SerializeField] private LayerMask layer;
+    
     public Action OnClicked;
 
     private RaycastHit2D ray;
@@ -21,7 +22,8 @@ public class Clickable : MonoBehaviour
 
     public virtual void OnClick(Vector2 mousePosition) 
     {
-        ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, layer);
+        ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 
+            Mathf.Infinity, layer);
 
         if (ray.collider != null) 
         {

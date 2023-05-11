@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DatabaseManager : SingletonnPersistent<DatabaseManager>
+public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
 {
     [SerializeField] private bool useEncryption;
+
+    #region RecordedDataProperties
 
     private List<RecordedDataHandler> recordedDataHandlerList;
 
@@ -13,6 +15,8 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
     private GameDataHandler gameDataHandler;
     public GameDataHandler GameDataHandler => gameDataHandler;
 
+    #endregion
+    
     public override void Awake()
     {
         base.Awake();
@@ -32,9 +36,10 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
 
     public void SaveData(RecordedDataHandler recordedDataHandler)
     {
-        if (!recordedDataHandler.GetRecordedData().IsDirty)
+        if (recordedDataHandler.GetRecordedData().IsDirty)
         {
             recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
+            recordedDataHandler.GetRecordedData().IsDirty = false;
         }
     }
     
@@ -42,9 +47,10 @@ public class DatabaseManager : SingletonnPersistent<DatabaseManager>
     {
         foreach (var recordedDataHandler in recordedDataHandlerList)
         {
-            if (!recordedDataHandler.GetRecordedData().IsDirty)
+            if (recordedDataHandler.GetRecordedData().IsDirty)
             {
                 recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
+                recordedDataHandler.GetRecordedData().IsDirty = false;
             }
         }
     }
