@@ -1,26 +1,33 @@
-# GameJamCodeBase
+# UnityGameJamCodeBase
 
-## FSM (Finite State Machine) System
+We have collected the codes of the Game Jam games we have developed so far, and improved the code base by adding a few more systems. We hope that you can facilitate and accelerate your game development process by using this code base. By forking this repository, you can easily make your own improvements on top of it.
 
-This system can be used in any setting which has finite number of states and any number of transitions among that states. For example: If we have a character which has idle, run and crouch states, we need to create idle, run and crouch states. Afterwards, add transitions from idle to run and crouch. However, there won't be any transition from run to crouch.
+## Systems
+
+### FSM (Finite State Machine) System
+
+This system can be used in any setting which has finite number of states and any number of transitions among that states.
+
+#### Usage
 
 
-## Transition System
+
+### Transition System
 
 The aim is to record various scene transitions and enable their utilization in a desired manner on your projeckts.
 
 
-## Camera System
+### Camera System
 
 This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time.
 
 
-## Input System
+### Input System
 
 This system consists of two different classes where one for touch and the other for mouse click. Both have three actions for an input where first object can be touched/clicked, second dragging/moving and the third is released.
 
 
-## Executable System // task ve priority system
+### Executable System // task ve priority system
 
 
 ## Button Activity
@@ -28,12 +35,12 @@ This system consists of two different classes where one for touch and the other 
 This system allows you to assign to keys specific functions or tasks.
 
 
-## Database
+### Database
 
 This system allows you to store your data in JSON format which allowes you to create your own structures.
 
 
-## Animation System
+### Animation System
 
 This system ease you to create animations and transitions between them without the overhead of using Unity's Animator.
 
