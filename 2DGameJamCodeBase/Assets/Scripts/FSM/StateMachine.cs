@@ -1,61 +1,49 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+using System;
 
-public interface IContext
+public interface IContext<EState>
 {
-    void SetState(EStates newEStates);
-    void DoStateTransition(EStates newEStates);
+    void SetState(EState newEStates);
+    void DoStateTransition(EState newEStates);
 }
 
-[Serializable]
-public class StateToClassDictionary
-{
-    [FormerlySerializedAs("eState")] public EStates eStates;
-    public State stateClass;
-}
-
-public abstract class StateMachine : MonoBehaviour, IContext
+public abstract class StateMachine<EState> : MonoBehaviour, IContext<EState>
 {
     [SerializeField] private List<StateToClassDictionary> mockStateDictionary;
     [SerializeField] private bool isDebugEnabled;
     
-    private Dictionary<EStates, State> statesDictionary = new Dictionary<EStates, State>();
+    protected Dictionary<EState, State> statesDictionary;
 
-    private Dictionary<EStates, Action> stateTransitionDictionary;
-    
-    private EStates _startEStates;
-    
-    private State currentState;
+    protected Dictionary<EState, Action> stateTransitionDictionary;
 
-    private void Awake()
+    protected State currentState;
+    
+    [Serializable]
+    public class StateToClassDictionary
     {
+        public EState eStates;
+        public State stateClass;
+    }
+    
+    protected virtual void Awake()
+    {
+        statesDictionary = new Dictionary<EState, State>();
+        
         foreach (StateToClassDictionary item in mockStateDictionary)
         {
             statesDictionary.Add(item.eStates, item.stateClass);
         }
-
-        stateTransitionDictionary = new Dictionary<EStates, Action>()
-        {
-            { EStates.NONE, GoNone },
-        };
-    }
-
-    private void Start()
-    {
-        SetState(_startEStates);
     }
 
     private void Do() => currentState.Do();
-    private void GoNone() => currentState.GoNone(this);
 
-    public void DoStateTransition(EStates newEStates)
+    public void DoStateTransition(EState newEStates)
     {
         stateTransitionDictionary[newEStates]?.Invoke();
     }
     
-    public void SetState(EStates newEStates)
+    public void SetState(EState newEStates)
     {
         currentState = statesDictionary[newEStates];
         Do();
