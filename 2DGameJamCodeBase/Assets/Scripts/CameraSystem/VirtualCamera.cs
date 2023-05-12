@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public abstract class VirtualCamera<ECameraType> : MonoBehaviour
+namespace Munkur
 {
-    [SerializeField] private ECameraType cameraType;
-    public ECameraType CameraType => cameraType;
+    public abstract class VirtualCamera<ECameraType> : MonoBehaviour
+    {
+        [SerializeField] private ECameraType cameraType;
+        public ECameraType CameraType => cameraType;
+    }
 }

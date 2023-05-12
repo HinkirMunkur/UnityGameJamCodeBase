@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public sealed class DataSOManager : SingletonnPersistent<DataSOManager>
+namespace Munkur
 {
-    [SerializeField] private GameDataSO gameDataSO;
+    public sealed class DataSOManager : SingletonnPersistent<DataSOManager>
+    {
+        [SerializeField] private GameDataSO gameDataSO;
 
-    public GameDataSO GameDataSO => gameDataSO;
+        public GameDataSO GameDataSO => gameDataSO;
+    }
 }

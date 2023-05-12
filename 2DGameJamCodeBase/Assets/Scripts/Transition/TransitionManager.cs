@@ -5,131 +5,134 @@ using UnityEngine.UI;
 using EasyButtons;
 using UnityEngine;
 
-public sealed class TransitionManager : Singletonn<TransitionManager>
+namespace Munkur
 {
-    [SerializeField] private ESceneTransition _startTransitionType;
-    [SerializeField] private ESceneTransition _endTransitionType;
-    
-    [SerializeField] private GameObject[] setInactiveObjects;
-    [SerializeField] private float duration;
-
-    [SerializeField] private Transform transitionTypeHolder;
-    [SerializeField] private Canvas blackScreenCanvas;
-
-    [SerializeField] private Transition startTransition = null;
-    [SerializeField] private Transition endTransition = null;
-
-    public bool TransitionStarted { get; set; } = false;
-
-    private void Start()
+    public sealed class TransitionManager : Singletonn<TransitionManager>
     {
-        StartSceneTransition();
-    }
+        [SerializeField] private ESceneTransition _startTransitionType;
+        [SerializeField] private ESceneTransition _endTransitionType;
+        
+        [SerializeField] private GameObject[] setInactiveObjects;
+        [SerializeField] private float duration;
 
-    public void StartSceneTransition()
-    {
-        StartCoroutine(ExecuteStartSceneTransition());
-    }
-    public void EndSceneTransition(string sceneName = null)
-    {
-        StartCoroutine(ExecuteEndSceneTransition(sceneName));
-    }
-        
-    private IEnumerator ExecuteStartSceneTransition()
-    {
-        for(int i = 0; i < setInactiveObjects.Length; i++)
-            setInactiveObjects[i].SetActive(false);
-        
-        startTransition.ExecuteCustomStartTransition(duration);
-        
-        yield return new WaitForSecondsRealtime(startTransition.
-            TransitionDuration);
-        
-        for(int i = 0; i < setInactiveObjects.Length; i++)
-            setInactiveObjects[i].SetActive(true);
+        [SerializeField] private Transform transitionTypeHolder;
+        [SerializeField] private Canvas blackScreenCanvas;
 
-        TransitionStarted = false;
-    }
-    
-    private IEnumerator ExecuteEndSceneTransition(string sceneName)
-    {
-        TransitionStarted = true;
-        
-        for (int i = 0; i < setInactiveObjects.Length; i++)
-            setInactiveObjects[i].SetActive(false);
-        
-        endTransition.ExecuteCustomEndTransition(duration);
-        
-        yield return new WaitForSecondsRealtime(endTransition.
-            TransitionDuration);
+        [SerializeField] private Transition startTransition = null;
+        [SerializeField] private Transition endTransition = null;
 
-        if (sceneName != null)
+        public bool TransitionStarted { get; set; } = false;
+
+        private void Start()
         {
-            LevelController.Instance.LoadSceneWithName(sceneName);
+            StartSceneTransition();
         }
-    }
-    
-#if UNITY_EDITOR
-    
-    [Button]
-    private void CreateTransitionObjects()
-    {
-        SetDefault();
-        
-        foreach (var val in TransitionRefereneces.Instance.ESceneTransitionToTransitionList)
+
+        public void StartSceneTransition()
         {
-            if (val.ESceneTransition == _startTransitionType)
-            {
-                startTransition = Instantiate(val.Transition, transitionTypeHolder);
-                GameObject GO = Instantiate(val.BlackScreen,blackScreenCanvas.transform);
-                
-                startTransition.SetTransitionReferences(GO.GetComponent<Image>());
-                
-                UnityEditor.EditorUtility.SetDirty(this);
-                
-                if (_startTransitionType == _endTransitionType)
-                {
-                    endTransition = startTransition;
-                    break;
-                }
-            }
-            else if(val.ESceneTransition == _endTransitionType)
-            {
-                endTransition = Instantiate(val.Transition, transitionTypeHolder);
-                GameObject GO = Instantiate(val.BlackScreen,blackScreenCanvas.transform);
-                
-                endTransition.SetTransitionReferences(GO.GetComponent<Image>());
+            StartCoroutine(ExecuteStartSceneTransition());
+        }
+        public void EndSceneTransition(string sceneName = null)
+        {
+            StartCoroutine(ExecuteEndSceneTransition(sceneName));
+        }
+            
+        private IEnumerator ExecuteStartSceneTransition()
+        {
+            for(int i = 0; i < setInactiveObjects.Length; i++)
+                setInactiveObjects[i].SetActive(false);
+            
+            startTransition.ExecuteCustomStartTransition(duration);
+            
+            yield return new WaitForSecondsRealtime(startTransition.
+                TransitionDuration);
+            
+            for(int i = 0; i < setInactiveObjects.Length; i++)
+                setInactiveObjects[i].SetActive(true);
 
-                UnityEditor.EditorUtility.SetDirty(this);
+            TransitionStarted = false;
+        }
+        
+        private IEnumerator ExecuteEndSceneTransition(string sceneName)
+        {
+            TransitionStarted = true;
+            
+            for (int i = 0; i < setInactiveObjects.Length; i++)
+                setInactiveObjects[i].SetActive(false);
+            
+            endTransition.ExecuteCustomEndTransition(duration);
+            
+            yield return new WaitForSecondsRealtime(endTransition.
+                TransitionDuration);
 
-                if (_startTransitionType == _endTransitionType)
-                {
-                    startTransition = endTransition;
-                    break;
-                }
+            if (sceneName != null)
+            {
+                LevelController.Instance.LoadSceneWithName(sceneName);
             }
         }
-
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-    }
-
-    private void SetDefault()
-    {
-        int childCount = transitionTypeHolder.childCount;
         
-        for (int i = 0; i < childCount; i++)
+    #if UNITY_EDITOR
+        
+        [Button]
+        private void CreateTransitionObjects()
         {
-            DestroyImmediate(transitionTypeHolder.GetChild(0).gameObject);
+            SetDefault();
+            
+            foreach (var val in TransitionRefereneces.Instance.ESceneTransitionToTransitionList)
+            {
+                if (val.ESceneTransition == _startTransitionType)
+                {
+                    startTransition = Instantiate(val.Transition, transitionTypeHolder);
+                    GameObject GO = Instantiate(val.BlackScreen,blackScreenCanvas.transform);
+                    
+                    startTransition.SetTransitionReferences(GO.GetComponent<Image>());
+                    
+                    UnityEditor.EditorUtility.SetDirty(this);
+                    
+                    if (_startTransitionType == _endTransitionType)
+                    {
+                        endTransition = startTransition;
+                        break;
+                    }
+                }
+                else if(val.ESceneTransition == _endTransitionType)
+                {
+                    endTransition = Instantiate(val.Transition, transitionTypeHolder);
+                    GameObject GO = Instantiate(val.BlackScreen,blackScreenCanvas.transform);
+                    
+                    endTransition.SetTransitionReferences(GO.GetComponent<Image>());
+
+                    UnityEditor.EditorUtility.SetDirty(this);
+
+                    if (_startTransitionType == _endTransitionType)
+                    {
+                        startTransition = endTransition;
+                        break;
+                    }
+                }
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
+
+        private void SetDefault()
+        {
+            int childCount = transitionTypeHolder.childCount;
+            
+            for (int i = 0; i < childCount; i++)
+            {
+                DestroyImmediate(transitionTypeHolder.GetChild(0).gameObject);
+            }
+            
+            childCount = blackScreenCanvas.transform.childCount;
+            
+            for (int i = 0; i < childCount; i++)
+            {
+                DestroyImmediate(blackScreenCanvas.transform.GetChild(0).gameObject);
+            }
         }
         
-        childCount = blackScreenCanvas.transform.childCount;
+    #endif
         
-        for (int i = 0; i < childCount; i++)
-        {
-            DestroyImmediate(blackScreenCanvas.transform.GetChild(0).gameObject);
-        }
     }
-    
-#endif
-    
 }

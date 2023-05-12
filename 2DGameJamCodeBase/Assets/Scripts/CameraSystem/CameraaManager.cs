@@ -8,32 +8,35 @@ public enum ECameraSystem
     Player2CameraSystem,
 }
 
-public sealed class CameraaManager : Singletonn<CameraaManager>
+namespace Munkur
 {
-    [SerializeField] private Transform cameraSystemHolder;
+    public sealed class CameraaManager : Singletonn<CameraaManager>
+    {
+        [SerializeField] private Transform cameraSystemHolder;
         
-    private Dictionary<ECameraSystem, ICameraTransition> cameraSystemDictionary;
+        private Dictionary<ECameraSystem, ICameraTransition> cameraSystemDictionary;
 
-    private void Awake()
-    {
-        cameraSystemDictionary = new Dictionary<ECameraSystem, ICameraTransition>();
-
-        ICameraTransition[] cameraSystems = cameraSystemHolder.GetComponentsInChildren<ICameraTransition>();
-
-        foreach (var cameraSystem in cameraSystems)
+        private void Awake()
         {
-            cameraSystemDictionary.Add(cameraSystem.ECameraSystem, cameraSystem);
-        }
-    }
+            cameraSystemDictionary = new Dictionary<ECameraSystem, ICameraTransition>();
 
-    public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
-    {
-        ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
-        cameraTransitionSystem.SetCamera(eCameraType);
-    }
+            ICameraTransition[] cameraSystems = cameraSystemHolder.GetComponentsInChildren<ICameraTransition>();
+
+            foreach (var cameraSystem in cameraSystems)
+            {
+                cameraSystemDictionary.Add(cameraSystem.ECameraSystem, cameraSystem);
+            }
+        }
+
+        public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
+        {
+            ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
+            cameraTransitionSystem.SetCamera(eCameraType);
+        }
     
-    private ICameraTransition GetCameraSystem(ECameraSystem eCameraSystem)
-    {
-        return cameraSystemDictionary[eCameraSystem];
+        private ICameraTransition GetCameraSystem(ECameraSystem eCameraSystem)
+        {
+            return cameraSystemDictionary[eCameraSystem];
+        }
     }
 }

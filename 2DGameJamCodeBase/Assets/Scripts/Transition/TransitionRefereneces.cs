@@ -2,15 +2,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class TransitionRefereneces : Singletonn<TransitionRefereneces>
+namespace Munkur
 {
-    public List<ESceneTransitionToTransition> ESceneTransitionToTransitionList;
-}
+    public class TransitionRefereneces : Singletonn<TransitionRefereneces>
+    {
+        public List<ESceneTransitionToTransition> ESceneTransitionToTransitionList;
+    }
 
-[Serializable]
-public struct ESceneTransitionToTransition
-{
-    public ESceneTransition ESceneTransition;
-    public Transition Transition;
-    public GameObject BlackScreen;
+    [Serializable]
+    public struct ESceneTransitionToTransition
+    {
+        public ESceneTransition ESceneTransition;
+        public Transition Transition;
+        public GameObject BlackScreen;
+    }
 }

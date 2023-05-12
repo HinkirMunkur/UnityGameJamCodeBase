@@ -2,30 +2,34 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
 
-[RequireComponent(typeof(Button))]
-public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
+namespace Munkur
 {
-    [SerializeField] private Button button;
-
-    public void DeactivateButton()
+    [RequireComponent(typeof(Button))]
+    public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
     {
-        button.interactable = false;
-    }
+        [SerializeField] private Button button;
 
-    public void ActivateButton()
-    {
-        button.interactable = true;
-    }
+        public void DeactivateButton()
+        {
+            button.interactable = false;
+        }
 
-    public abstract void OnPointerClick(PointerEventData eventData);
+        public void ActivateButton()
+        {
+            button.interactable = true;
+        }
+
+        public abstract void OnPointerClick(PointerEventData eventData);
     
 #if UNITY_EDITOR
 
-    protected void SetProperButton()
-    {
-        button = GetComponent<Button>();
-    }
+        protected void SetProperButton()
+        {
+            button = GetComponent<Button>();
+        }
     
 #endif
     
+    }
 }
+
