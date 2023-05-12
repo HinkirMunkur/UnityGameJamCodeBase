@@ -156,7 +156,28 @@ Assets\TestSystems\TestScripts
 - ### Transition System
 
   The aim is to record various scene transitions and enable their utilization in a desired manner on your projeckts.
+  - #### Usage:
+    1.By inheriting the Transition class and overriding the necessary functions, we can create the transitions that we want. After registering these transitions in the required enum, our system will be ready to use them. Once we have selected the desired transition to use for scene opening or closing via the Transition Manager, we can create a transition reference by clicking the "Create transition references" button to use it.
+    ```C#
+    public class SquareTransition : Transition
+    {
+        public override void ExecuteCustomStartTransition(float duration)
+        {
+            blackBackground.enabled = true;
+            blackBackground.transform.DOScale(Vector3.zero, duration);
+        }
 
+        public override void ExecuteCustomEndTransition(float duration)
+        {
+            blackBackground.transform.localScale = Vector3.zero;
+            blackBackground.enabled = true;
+
+            blackBackground.transform.DOScale(Vector3.one, duration);
+        }
+    }
+    ```
+    
+    ![CycleSceneTransition](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/456167dc-aa4b-427b-99f2-34aa8f45f415)
 
 - ### Camera System
 
@@ -166,6 +187,7 @@ Assets\TestSystems\TestScripts
 - ### Dialogue System
 
   Unity TMP Dialogue System that provides creating simple dialogues with custom text effects.
+  
   Broad Description of Dialogue System: https://github.com/BoraKaraaa/UnityDialogueSystemTMP
   
   ![Untitled video - Made with Clipchamp (2)](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/7c6d3c7e-4345-438a-ada2-4bfcfeeee81e)
