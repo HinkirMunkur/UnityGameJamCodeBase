@@ -152,7 +152,10 @@ Assets\TestSystems\TestScripts
           }
     }
     ```
-  
+    4.
+
+- ### Audio System
+
 - ### Transition System
 
   The aim is to record various scene transitions and enable their utilization in a desired manner on your projeckts.
@@ -200,12 +203,32 @@ Assets\TestSystems\TestScripts
 
 - ### Executable System // task ve priority system
 
+  This system allows you to assign to keys specific functions or tasks.
 
 - ### Button Activity
 
-  This system allows you to assign to keys specific functions or tasks.
+  This system allows you to assign to buttons specific function.
+  - #### Usage:
+    By inheriting the Button Activity class, we can create a class which stands in the object that has a button component. After that, we define the function that we want our button to perform when clicked inside the "OnPointerClick()" method, so our button is ready to use.
+    ```C#
+    [RequireComponent(typeof(Button))]
+    public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
+    {
+        [SerializeField] private Button button;
 
+        public void DeactivateButton()
+        {
+            button.interactable = false;
+        }
 
+        public void ActivateButton()
+        {
+            button.interactable = true;
+        }
+
+        public abstract void OnPointerClick(PointerEventData eventData);
+    }
+    ```
 - ### Animation System
 
   This system ease you to create animations and transitions between them without the overhead of using Unity's Animator.
