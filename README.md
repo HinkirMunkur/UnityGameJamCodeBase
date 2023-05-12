@@ -2,6 +2,13 @@
 
 We have collected the codes of the Game Jam games we have developed so far, and improved the code base by adding a few more systems. We hope that you can facilitate and accelerate your game development process by using this code base. By forking this repository, you can easily make your own improvements on top of it.
 
+We have created test scenes and scripts for each of the following systems. If you wish, you can see the sample versions of the systems in these scenes.
+
+```bash
+Assets\TestSystems\TestScenes
+```
+
+
 ## Systems
 
 - ### FSM (Finite State Machine) System
