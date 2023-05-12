@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d15a2a507ecc66488416301f21f9a64, type: 3}
+  m_Name: ImportSoundEffect
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: ce1bca6f9fa8ee5428d0f0c529df3772, type: 3}
+  audioName: ImportSoundEffect
+  volume: 1

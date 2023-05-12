@@ -11,7 +11,7 @@ public class Draggable : MonoBehaviour
     private bool isBeingDragged = false;
     private RaycastHit2D ray;
 
-    private void Awake()
+    private void Start()
     { 
         MouseInputSystemManager.Instance.OnMouseDragged += OnDrag;    
         MouseInputSystemManager.Instance.OnMouseReleased += OnDragEnd;    
@@ -40,6 +40,9 @@ public class Draggable : MonoBehaviour
     public virtual void OnDragEnd(Vector2 mousePosition) 
     {
         isBeingDragged = false;
-        OnDragFinished?.Invoke();
+        if (ray.collider != null && ray.collider.gameObject == gameObject) 
+        {
+            OnDragFinished?.Invoke();
+        }
     }
 }

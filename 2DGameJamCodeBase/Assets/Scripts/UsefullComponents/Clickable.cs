@@ -9,10 +9,9 @@ public class Clickable : MonoBehaviour
     public Action OnClicked;
 
     private RaycastHit2D ray;
-    private void Awake()
+    private void Start()
     { 
-        MouseInputSystemManager.Instance.OnMouseLeftClicked += OnClick;    
- 
+        MouseInputSystemManager.Instance.OnMouseLeftClicked += OnClick;
     }
 
     private void OnDestroy() 
@@ -25,7 +24,7 @@ public class Clickable : MonoBehaviour
         ray = Physics2D.Raycast(rayCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 
             Mathf.Infinity, layer);
 
-        if (ray.collider != null) 
+        if (ray.collider != null && ray.collider.gameObject == gameObject) 
         {
             OnClicked?.Invoke();
         }
