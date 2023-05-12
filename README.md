@@ -163,6 +163,13 @@ Assets\TestSystems\TestScripts
   This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time.
 
 
+- ### Dialogue System
+
+  Unity TMP Dialogue System that provides creating simple dialogues with custom text effects.
+  Broad Description of Dialogue System: https://github.com/BoraKaraaa/UnityDialogueSystemTMP
+  ![Untitled video - Made with Clipchamp](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/d9b08aa4-24c7-44cb-84aa-bc2b4771436e)
+
+  
 - ### Input System
 
   This system consists of two different classes where one for touch and the other for mouse click. Both have three actions for an input where first object can be touched/clicked, second dragging/moving and the third is    released.
