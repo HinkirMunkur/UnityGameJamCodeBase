@@ -5,7 +5,7 @@ public class AudioTest : MonoBehaviour
     [SerializeField] private Clickable _customSoundClick;
     [SerializeField] private Clickable _importSoundClick;
     
-    private void Start()
+    private void Awake()
     {
         _customSoundClick.OnClicked += PlayCustomSound;
         _importSoundClick.OnClicked += PlayImportSound;    

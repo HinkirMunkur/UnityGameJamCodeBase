@@ -9,7 +9,7 @@ public class Clickable : MonoBehaviour
     public Action OnClicked;
 
     private RaycastHit2D ray;
-    private void Start()
+    private void Awake()
     { 
         MouseInputSystemManager.Instance.OnMouseLeftClicked += OnClick;
     }

@@ -43,8 +43,16 @@ public abstract class AnimationController<EAnimationType> : MonoBehaviour
     public void PlayAnimation(EAnimationType animationType, int layer = 0, 
         Action OnAnimationFinished = null)
     {
-        currentAnimationType = animationType;
-        animator.Play(animationTypeNameDictionary[animationType], layer);
+        if (currentAnimationType.Equals(animationType))
+        {
+            StopAllCoroutines();
+            animator.Rebind();
+        }
+        else
+        {
+            currentAnimationType = animationType;
+            animator.Play(animationTypeNameDictionary[animationType], layer);
+        }
 
         StartCoroutine(CheckUntilAnimationFinish(animationTypeNameDictionary[animationType], layer,
             OnAnimationFinished));
@@ -52,11 +60,12 @@ public abstract class AnimationController<EAnimationType> : MonoBehaviour
 
     private IEnumerator CheckUntilAnimationFinish(String animationName, int layerIndex, Action OnAnimationFinished)
     {
-        while (!animator.GetCurrentAnimatorStateInfo(layerIndex).IsName(animationName))
+        while (!animator.GetCurrentAnimatorStateInfo(layerIndex).IsName(animationName) ||
+               animator.GetCurrentAnimatorStateInfo(layerIndex).normalizedTime < 1.0f)
         {
             yield return null;
         }
-        
+
         OnAnimationFinished?.Invoke();
     }
 

@@ -7,11 +7,12 @@ public class Draggable : MonoBehaviour
     [SerializeField] private LayerMask layer;
 
     public Action OnDragFinished;
+    
     private Vector3 currentPosition;
     private bool isBeingDragged = false;
     private RaycastHit2D ray;
 
-    private void Start()
+    private void Awake()
     { 
         MouseInputSystemManager.Instance.OnMouseDragged += OnDrag;    
         MouseInputSystemManager.Instance.OnMouseReleased += OnDragEnd;    
