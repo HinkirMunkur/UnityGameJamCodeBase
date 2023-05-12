@@ -32,17 +32,19 @@ public abstract class AnimationController<EAnimationType> : MonoBehaviour
 
     protected virtual void Awake()
     {
+        animationTypeNameDictionary = new Dictionary<EAnimationType, string>();
+        
         foreach (var animationTypeNamePair in animationTypeNameList)
         {
             animationTypeNameDictionary.Add(animationTypeNamePair.AnimationType, animationTypeNamePair.AnimationName);
         }
     }
 
-    public void PlayAnimation(EAnimationType animationType, int layer = -1, float normalizedTime = Mathf.NegativeInfinity, 
+    public void PlayAnimation(EAnimationType animationType, int layer = 0, 
         Action OnAnimationFinished = null)
     {
         currentAnimationType = animationType;
-        animator.Play(animationTypeNameDictionary[animationType], layer, normalizedTime);
+        animator.Play(animationTypeNameDictionary[animationType], layer);
 
         StartCoroutine(CheckUntilAnimationFinish(animationTypeNameDictionary[animationType], layer,
             OnAnimationFinished));
