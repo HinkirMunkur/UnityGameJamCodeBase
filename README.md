@@ -82,76 +82,76 @@ Assets\TestSystems\TestScripts
 
   - #### Usage:
   
-  1.RecordedData is an abstract class that contains the data we want to write to JSON. After inheriting this class, we can write the desired data into it, and we can also assign default values using the constructor.
-  ```C#
-  [System.Serializable]
-  public class PlayerRecordedData : RecordedData
-  {
-      public string PlayerName;
-      public int PlayerHealt;
-      public int playerDamage;
-      public bool isPlayerDead;
-    
-      public PlayerRecordedData() : base()
-      {
-          PlayerName = "DefaultName";
-          PlayerHealt = 100;
-          playerDamage = 5;
-          isPlayerDead = false;
-      }
-  }
-  ```
-  
-  2.The RecordedDataHandler class is an abstract class that performs JSON writing and reading operations through JsonFileHandlers and contains Getter and Setter methods for Recorded Data. By inheriting this class, we should define our newly inherited RecordedData class as a property inside it.
-  ```C#
-  public class PlayerDataHandler : RecordedDataHandler
-  {
-      public PlayerDataHandler(string dataFileName, PlayerRecordedData playerRecordedData, bool useEncryption) 
-          : base(dataFileName, useEncryption)
-      {
-          this.playerRecordedData = playerRecordedData;
-      }
+    1.RecordedData is an abstract class that contains the data we want to write to JSON. After inheriting this class, we can write the desired data into it, and we can also assign default values using the constructor.
+    ```C#
+    [System.Serializable]
+    public class PlayerRecordedData : RecordedData
+    {
+        public string PlayerName;
+        public int PlayerHealt;
+        public int playerDamage;
+        public bool isPlayerDead;
 
-      private PlayerRecordedData playerRecordedData;
-
-      public PlayerRecordedData PlayerRecordedData
-      {
-          get
-          {
-              playerRecordedData.IsLoaded = true;
-              return playerRecordedData;
-          }
-          set
-          {
-              playerRecordedData.IsDirty = true;
-              playerRecordedData = value;
-          }
-      }
-      public override RecordedData GetRecordedData()
-      {
-          return playerRecordedData;
-      }
-
-      public override void SetRecordedData(RecordedData recordedData)
-      {
-          playerRecordedData = (PlayerRecordedData)recordedData;
-      }
-  }
-  ```
-  
-  3.Inside the DatabaseManager, we need to define our inherited RecordedDataHandlers as properties and initialize them within the "InitRecordedDataHandlers()" function.
-  ```C#
-  public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
-  {
-        private PlayerDataHandler playerDataHandler;
-        public PlayerDataHandler PlayerDataHandler => playerDataHandler;
-        
-        private void InitRecordedDataHandlers()
+        public PlayerRecordedData() : base()
         {
-            playerDataHandler = new PlayerDataHandler("PlayerData.json", new PlayerRecordedData(), useEncryption);
+            PlayerName = "DefaultName";
+            PlayerHealt = 100;
+            playerDamage = 5;
+            isPlayerDead = false;
         }
-  }
-  ```
+    }
+    ```
+
+    2.The RecordedDataHandler class is an abstract class that performs JSON writing and reading operations through JsonFileHandlers and contains Getter and Setter methods for Recorded Data. By inheriting this class, we should define our newly inherited RecordedData class as a property inside it.
+    ```C#
+    public class PlayerDataHandler : RecordedDataHandler
+    {
+        public PlayerDataHandler(string dataFileName, PlayerRecordedData playerRecordedData, bool useEncryption) 
+            : base(dataFileName, useEncryption)
+        {
+            this.playerRecordedData = playerRecordedData;
+        }
+
+        private PlayerRecordedData playerRecordedData;
+
+        public PlayerRecordedData PlayerRecordedData
+        {
+            get
+            {
+                playerRecordedData.IsLoaded = true;
+                return playerRecordedData;
+            }
+            set
+            {
+                playerRecordedData.IsDirty = true;
+                playerRecordedData = value;
+            }
+        }
+        public override RecordedData GetRecordedData()
+        {
+            return playerRecordedData;
+        }
+
+        public override void SetRecordedData(RecordedData recordedData)
+        {
+            playerRecordedData = (PlayerRecordedData)recordedData;
+        }
+    }
+    ```
+
+    3.Inside the DatabaseManager, we need to define our inherited RecordedDataHandlers as properties and initialize them within the "InitRecordedDataHandlers()" function.
+    ```C#
+    public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
+    {
+          private PlayerDataHandler playerDataHandler;
+          public PlayerDataHandler PlayerDataHandler => playerDataHandler;
+
+          private void InitRecordedDataHandlers()
+          {
+              playerDataHandler = new PlayerDataHandler("PlayerData.json", new PlayerRecordedData(), useEncryption);
+          }
+    }
+    ```
   
 - ### Transition System
 
