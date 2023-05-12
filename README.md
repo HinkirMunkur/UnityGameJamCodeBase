@@ -75,9 +75,84 @@ Assets\TestSystems\TestScripts
           }
       }
       ```
+      
+- ### Database System
 
+  This system allows you to store your data in JSON format which allowes you to create your own structures. By using this system, you can save your data with as many JSON files as you want, and you can also use your own data structures in JSON.
 
+  - #### Usage:
+  
+  1.RecordedData is an abstract class that contains the data we want to write to JSON. After inheriting this class, we can write the desired data into it, and we can also assign default values using the constructor.
+  ```C#
+  [System.Serializable]
+  public class PlayerRecordedData : RecordedData
+  {
+      public string PlayerName;
+      public int PlayerHealt;
+      public int playerDamage;
+      public bool isPlayerDead;
+    
+      public PlayerRecordedData() : base()
+      {
+          PlayerName = "DefaultName";
+          PlayerHealt = 100;
+          playerDamage = 5;
+          isPlayerDead = false;
+      }
+  }
+  ```
+  
+  2.The RecordedDataHandler class is an abstract class that performs JSON writing and reading operations through JsonFileHandlers and contains Getter and Setter methods for Recorded Data. By inheriting this class, we should define our newly inherited RecordedData class as a property inside it.
+  ```C#
+  public class PlayerDataHandler : RecordedDataHandler
+  {
+      public PlayerDataHandler(string dataFileName, PlayerRecordedData playerRecordedData, bool useEncryption) 
+          : base(dataFileName, useEncryption)
+      {
+          this.playerRecordedData = playerRecordedData;
+      }
 
+      private PlayerRecordedData playerRecordedData;
+
+      public PlayerRecordedData PlayerRecordedData
+      {
+          get
+          {
+              playerRecordedData.IsLoaded = true;
+              return playerRecordedData;
+          }
+          set
+          {
+              playerRecordedData.IsDirty = true;
+              playerRecordedData = value;
+          }
+      }
+      public override RecordedData GetRecordedData()
+      {
+          return playerRecordedData;
+      }
+
+      public override void SetRecordedData(RecordedData recordedData)
+      {
+          playerRecordedData = (PlayerRecordedData)recordedData;
+      }
+  }
+  ```
+  
+  3.Inside the DatabaseManager, we need to define our inherited RecordedDataHandlers as properties and initialize them within the "InitRecordedDataHandlers()" function.
+  ```C#
+  public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
+  {
+        private PlayerDataHandler playerDataHandler;
+        public PlayerDataHandler PlayerDataHandler => playerDataHandler;
+        
+        private void InitRecordedDataHandlers()
+        {
+            playerDataHandler = new PlayerDataHandler("PlayerData.json", new PlayerRecordedData(), useEncryption);
+        }
+  }
+  ```
+  
 - ### Transition System
 
   The aim is to record various scene transitions and enable their utilization in a desired manner on your projeckts.
@@ -99,11 +174,6 @@ Assets\TestSystems\TestScripts
 - ### Button Activity
 
   This system allows you to assign to keys specific functions or tasks.
-
-
-- ### Database
-
-  This system allows you to store your data in JSON format which allowes you to create your own structures.
 
 
 - ### Animation System
