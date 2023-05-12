@@ -147,6 +147,25 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
     }
 
+    /// <summary>
+    /// Mute or unmute all musics.
+    /// </summary>
+    /// <param name="mute"></param> is the flag for mute or unmute.
+    public void MuteMusic(bool mute)
+    {
+        _musicAudioSource.mute = mute;   
+    }
+
+    /// <summary>
+    /// Mute or unmute all sound effects.
+    /// </summary>
+    /// <param name="mute"></param> is the flag for mute or unmute.
+    public void MuteSoundEffect(bool mute)
+    {
+        _soundEffectAudioSource.mute = mute;  
+        _customSoundEffectAudioSource.mute = mute; 
+    }
+
     /**
      * <summary>
      * Changes the volume of the music audio source. (Not the volume of music scriptable object!!!!!
