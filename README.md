@@ -167,7 +167,8 @@ Assets\TestSystems\TestScripts
 
   Unity TMP Dialogue System that provides creating simple dialogues with custom text effects.
   Broad Description of Dialogue System: https://github.com/BoraKaraaa/UnityDialogueSystemTMP
-  ![Untitled video - Made with Clipchamp](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/d9b08aa4-24c7-44cb-84aa-bc2b4771436e)
+  
+  ![Untitled video - Made with Clipchamp (2)](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/7c6d3c7e-4345-438a-ada2-4bfcfeeee81e)
 
   
 - ### Input System
