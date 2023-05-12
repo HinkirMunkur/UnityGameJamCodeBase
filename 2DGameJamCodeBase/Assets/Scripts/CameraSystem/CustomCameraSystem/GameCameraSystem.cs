@@ -1,3 +1,4 @@
+using Munkur;
 public enum EGameCameraType
 {
     PreGameCamera,

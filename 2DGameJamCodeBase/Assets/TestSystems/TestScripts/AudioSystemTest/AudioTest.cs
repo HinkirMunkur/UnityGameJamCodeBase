@@ -16,7 +16,7 @@ public class AudioTest : MonoBehaviour
     private int _musicVolume;
     private int _soundEffectVolume;
     
-    private void Start()
+    private void Awake()
     {
         _customSoundClick.OnClicked += PlayCustomSound;
         _importSoundClick.OnClicked += PlayImportSound;    

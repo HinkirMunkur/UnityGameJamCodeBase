@@ -1,51 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
+namespace Munkur
 {
-    [SerializeField] private bool useEncryption;
-
-    #region RecordedDataProperties
-
-    private List<RecordedDataHandler> recordedDataHandlerList;
-
-    private PlayerDataHandler playerDataHandler;
-    public PlayerDataHandler PlayerDataHandler => playerDataHandler;
-
-    private GameDataHandler gameDataHandler;
-    public GameDataHandler GameDataHandler => gameDataHandler;
-
-    #endregion
-    
-    public override void Awake()
+    public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
     {
-        base.Awake();
-        InitRecordedDataHandlers();
-    }
+        [SerializeField] private bool useEncryption;
 
-    private void InitRecordedDataHandlers()
-    {
-        recordedDataHandlerList = new List<RecordedDataHandler>();
+        #region RecordedDataProperties
+
+        private List<RecordedDataHandler> recordedDataHandlerList;
+
+        private PlayerDataHandler playerDataHandler;
+        public PlayerDataHandler PlayerDataHandler => playerDataHandler;
+
+        private GameDataHandler gameDataHandler;
+        public GameDataHandler GameDataHandler => gameDataHandler;
+
+        #endregion
         
-        playerDataHandler = new PlayerDataHandler("PlayerData.json", new PlayerRecordedData(), useEncryption);
-        recordedDataHandlerList.Add(playerDataHandler);
-
-        gameDataHandler = new GameDataHandler("GameData.json", new GameRecordedData(), useEncryption);
-        recordedDataHandlerList.Add(gameDataHandler);
-    }
-
-    public void SaveData(RecordedDataHandler recordedDataHandler)
-    {
-        if (recordedDataHandler.GetRecordedData().IsDirty)
+        public override void Awake()
         {
-            recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
-            recordedDataHandler.GetRecordedData().IsDirty = false;
+            base.Awake();
+            InitRecordedDataHandlers();
         }
-    }
-    
-    public void SaveGame()
-    {
-        foreach (var recordedDataHandler in recordedDataHandlerList)
+
+        private void InitRecordedDataHandlers()
+        {
+            recordedDataHandlerList = new List<RecordedDataHandler>();
+            
+            playerDataHandler = new PlayerDataHandler("PlayerData.json", new PlayerRecordedData(), useEncryption);
+            recordedDataHandlerList.Add(playerDataHandler);
+
+            gameDataHandler = new GameDataHandler("GameData.json", new GameRecordedData(), useEncryption);
+            recordedDataHandlerList.Add(gameDataHandler);
+        }
+
+        public void SaveData(RecordedDataHandler recordedDataHandler)
         {
             if (recordedDataHandler.GetRecordedData().IsDirty)
             {
@@ -53,11 +44,36 @@ public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
                 recordedDataHandler.GetRecordedData().IsDirty = false;
             }
         }
-    }
-    
-    public void LoadGame()
-    {
-        foreach (var recordedDataHandler in recordedDataHandlerList)
+        
+        public void SaveGame()
+        {
+            foreach (var recordedDataHandler in recordedDataHandlerList)
+            {
+                if (recordedDataHandler.GetRecordedData().IsDirty)
+                {
+                    recordedDataHandler.JsonFileHandler.SaveData(recordedDataHandler.GetRecordedData());
+                    recordedDataHandler.GetRecordedData().IsDirty = false;
+                }
+            }
+        }
+        
+        public void LoadGame()
+        {
+            foreach (var recordedDataHandler in recordedDataHandlerList)
+            {
+                if (!recordedDataHandler.GetRecordedData().IsLoaded)
+                {
+                    RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData(recordedDataHandler.GetRecordedData());
+
+                    if (recordedData != null)
+                    {
+                        recordedDataHandler.SetRecordedData(recordedData);
+                    }
+                }
+            }
+        }
+
+        public void LoadData(RecordedDataHandler recordedDataHandler)
         {
             if (!recordedDataHandler.GetRecordedData().IsLoaded)
             {
@@ -69,20 +85,6 @@ public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
                 }
             }
         }
+        
     }
-
-    public void LoadData(RecordedDataHandler recordedDataHandler)
-    {
-        if (!recordedDataHandler.GetRecordedData().IsLoaded)
-        {
-            RecordedData recordedData = recordedDataHandler.JsonFileHandler.LoadData(recordedDataHandler.GetRecordedData());
-
-            if (recordedData != null)
-            {
-                recordedDataHandler.SetRecordedData(recordedData);
-            }
-        }
-    }
-    
-
 }

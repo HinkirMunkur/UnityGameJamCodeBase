@@ -1,7 +1,8 @@
-using UnityEngine;
-using TMPro;
-using System;
 using System.Collections;
+using UnityEngine;
+using System;
+using TMPro;
+using Munkur;
 
 public abstract class DialogueHolder : MonoBehaviour
 {

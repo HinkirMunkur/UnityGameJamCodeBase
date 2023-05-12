@@ -1,35 +1,37 @@
 using System;
 using UnityEngine;
 
-public sealed class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemManager>
+namespace Munkur
 {
-    public Action<Vector2> OnMouseLeftClicked;
-    //public Action<Vector2> OnMouseRightClicked;
-    //public Action<Vector2> OnMouseScrollClicked;
-    public Action<Vector2> OnMouseDragged;
-    public Action<Vector2> OnMouseReleased;
-    
-    [SerializeField] private bool enableInputListener = false;
-    
-    public bool EnableInputListener => enableInputListener;
-
-    private void Update()
+    public sealed class MouseInputSystemManager : SingletonnPersistent<MouseInputSystemManager>
     {
-        if(enableInputListener)
+        public Action<Vector2> OnMouseLeftClicked;
+        //public Action<Vector2> OnMouseRightClicked;
+        //public Action<Vector2> OnMouseScrollClicked;
+        public Action<Vector2> OnMouseDragged;
+        public Action<Vector2> OnMouseReleased;
+    
+        [SerializeField] private bool enableInputListener = false;
+    
+        public bool EnableInputListener => enableInputListener;
+
+        private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if(enableInputListener)
             {
-                OnMouseLeftClicked?.Invoke(Input.mousePosition);
-            }
-            else if(Input.GetMouseButtonUp(0))
-            {
-                OnMouseReleased?.Invoke(Input.mousePosition);
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                OnMouseDragged?.Invoke(Input.mousePosition);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    OnMouseLeftClicked?.Invoke(Input.mousePosition);
+                }
+                else if(Input.GetMouseButtonUp(0))
+                {
+                    OnMouseReleased?.Invoke(Input.mousePosition);
+                }
+                else if (Input.GetMouseButton(0))
+                {
+                    OnMouseDragged?.Invoke(Input.mousePosition);
+                }
             }
         }
     }
-
 }
