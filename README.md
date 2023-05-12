@@ -54,29 +54,27 @@ Assets\TestSystems\TestScripts
       ```C#
       public abstract class PlayerState : State
       {
-        public virtual void GoIdle(IContext<EPlayerState> context) { context.SetState(EPlayerState.IDLE); }
-        public virtual void GoRun(IContext<EPlayerState> context) { context.SetState(EPlayerState.RUN); }
+          public virtual void GoIdle(IContext<EPlayerState> context) { context.SetState(EPlayerState.IDLE); }
+          public virtual void GoRun(IContext<EPlayerState> context) { context.SetState(EPlayerState.RUN); }
       }
       ```
       
-      3.Finally, by inheriting the class that contains the transition functions we inherited from the abstract State class, we can fill in what needs to be done when the desired states are executed or when transitioning to other states.
+      3.In order to define the necessary actions to be taken when certain states are executed or transitions to other states occur, we need to create a new class which inherits the class that contains the transition functions that we have inherited from the abstract State class. This way, we can fill in the required actions specific to each state as needed.
       ```C#
       public class IdleState : PlayerState
       {
-        public override void Do()
-        {
-            // WRITE YOUR IMPLEMENTATION
-        }
+          public override void Do()
+          {
+              // WRITE YOUR IMPLEMENTATION
+          }
 
-        public override void GoRun(IContext<EPlayerState> context)
-        {
-            base.GoRun(context);
-            // WRITE YOUR IMPLEMENTATION
-        }
+          public override void GoRun(IContext<EPlayerState> context)
+          {
+              base.GoRun(context);
+              // WRITE YOUR IMPLEMENTATION
+          }
       }
       ```
-
-
 
 
 
