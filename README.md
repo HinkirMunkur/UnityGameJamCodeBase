@@ -6,8 +6,8 @@ We have created test scenes and scripts for each of the following systems. If yo
 
 ```bash
 Assets\TestSystems\TestScenes
+Assets\TestSystems\TestScripts
 ```
-
 
 ## Systems
 
@@ -16,7 +16,67 @@ Assets\TestSystems\TestScenes
   This system can be used in any setting which has finite number of states and any number of transitions among that states.
 
     - #### Usage:
-      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  
+      1.In order to use the abstract and generic StateMachine class on the structure we want, we need to inherit it first. Then, for the state machine structure we will create, we should determine the states and create a specific enumerator for the class we inherited, assigning this enumerator to the generic value of the base class.
+      ```C#
+      public enum EPlayerState
+      {
+          IDLE,
+          RUN
+      }
+
+      public class PlayerStateMachine : StateMachine<EPlayerState>
+      {
+          [SerializeField] private EPlayerState startEStates;
+
+          protected override void Awake()
+          {
+              base.Awake();
+
+              stateTransitionDictionary = new Dictionary<EPlayerState, Action>()
+              {
+                  { EPlayerState.IDLE, GoIdle },
+                  { EPlayerState.RUN, GoRun }
+              };
+          }
+
+          private void Start()
+          {
+              SetState(startEStates);
+          }
+
+          private void GoIdle() => ((PlayerState)currentState).GoIdle(this);
+          private void GoRun() => ((PlayerState)currentState).GoRun(this);
+      }
+      ```
+      
+      2.To create state transitions, we should write functions specific to each state transition and put them into the abstract state class by inheriting it.
+      ```C#
+      public abstract class PlayerState : State
+      {
+        public virtual void GoIdle(IContext<EPlayerState> context) { context.SetState(EPlayerState.IDLE); }
+        public virtual void GoRun(IContext<EPlayerState> context) { context.SetState(EPlayerState.RUN); }
+      }
+      ```
+      
+      3.Finally, by inheriting the class that contains the transition functions we inherited from the abstract State class, we can fill in what needs to be done when the desired states are executed or when transitioning to other states.
+      ```C#
+      public class IdleState : PlayerState
+      {
+        public override void Do()
+        {
+            // WRITE YOUR IMPLEMENTATION
+        }
+
+        public override void GoRun(IContext<EPlayerState> context)
+        {
+            base.GoRun(context);
+            // WRITE YOUR IMPLEMENTATION
+        }
+      }
+      ```
+
+
 
 
 
