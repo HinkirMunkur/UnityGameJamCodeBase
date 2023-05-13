@@ -1,4 +1,3 @@
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
 public class LevelController : SingletonnPersistent<LevelController>
@@ -38,12 +37,6 @@ public class LevelController : SingletonnPersistent<LevelController>
     {
         return SceneManager.GetActiveScene();
     }
-
-    public void SetCurrentSceneDirty()
-    {
-        EditorSceneManager.MarkSceneDirty(GetCurrentScene());
-    }
-
     public string GetScenePathWithIndex(int index)
     {
         return SceneUtility.GetScenePathByBuildIndex(index);
@@ -53,5 +46,12 @@ public class LevelController : SingletonnPersistent<LevelController>
     {
         return SceneManager.GetActiveScene().buildIndex;
     }
+    
+#if  UNITY_EDITOR
+    public void SetCurrentSceneDirty()
+    {
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(GetCurrentScene());
+    }
+#endif
 
 }

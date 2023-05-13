@@ -1,5 +1,4 @@
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using EasyButtons;
@@ -112,7 +111,7 @@ namespace Munkur
                 }
             }
 
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
 
         private void SetDefault()
