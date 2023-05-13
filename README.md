@@ -383,10 +383,113 @@ Assets\TestSystems\TestScripts
     }
     ```
   
+- ### Executable System 
+
+  The Executable system allows us to break down an action into parts to create a cleaner structure. Each executable class that we create can be executed by the Executer as many times as needed.
+  - #### Usage:
+    1.For a class to be executed by the Executer, it must implement the IExecutable interface. After implementing it, the "Run()" function should be filled so that the desired task can be performed when executed. The desired task may take a long time to complete, so the "Run()" function may return an ETaskStatus enumerator that can take the values of START, CONTINUE, or FINISH.
+    ```C#
+    public interface IExecuteable
+    {
+        public ETaskStatus CurrentETaskStatus
+        {
+            get;
+            set;
+        }
+        public ETaskStatus Run();
+    }
+
+    public enum ETaskStatus
+    {
+        START,
+        CONTINUE,
+        FINISH,
+    }
+
+    public abstract class Task : MonoBehaviour, IExecuteable
+    {
+        public ETaskStatus CurrentETaskStatus { get; set; } = ETaskStatus.START;
+        public abstract ETaskStatus Run();
+    }
+    ```
+    2.The Executer continuously checks for the completion of an ongoing task based on the ETaskStatus returned by the Run() function, which can take values of START, CONTINUE, or FINISH. If there is an unfinished task, the Executer keeps checking until it is completed. Once all tasks are finished, the isExecuteFinished Action provided as a parameter to the Execute() function is invoked. This Action can be used to check if all tasks have completed. 
+  ```C#
+  public sealed class Executer : SingletonnPersistent<Executer>
+  {
+      private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
+
+      public void Execute(Transform taskHolder, Action isExecuteFinished = null)
+      {
+          List<IExecuteable> continuingTasks = new List<IExecuteable>();
+                
+          if (taskDictionary.ContainsKey(taskHolder))
+          {
+              foreach (var task in taskDictionary[taskHolder])
+              {
+                  if (task.Run() == ETaskStatus.CONTINUE)
+                  {
+                        continuingTasks.Add(task);
+                  }
+              }
+
+              if (continuingTasks.Count > 0)
+              {
+                  StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+              }
+              else
+              {
+                  isExecuteFinished?.Invoke();
+              }
+
+              return;
+          }
+
+          IExecuteable[] executeableTasks = taskHolder.GetComponents<IExecuteable>();
+            
+          taskDictionary.Add(taskHolder, executeableTasks);
+
+          foreach (var task in executeableTasks)
+          {
+              if (task.Run() == ETaskStatus.CONTINUE)
+              {
+                  continuingTasks.Add(task);
+              }
+          }
+            
+          if (continuingTasks.Count > 0)
+          {
+              StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+          }
+          else
+          {
+              isExecuteFinished?.Invoke();
+          }
+      }
+
+      private IEnumerator CheckUntilTasksFinished(List<IExecuteable> continuingTasks, Action isExecuteFinished)
+      {
+          while (continuingTasks.Count != 0)
+          {
+              for (int i = continuingTasks.Count-1; i >= 0; i--)
+              {
+                  if (continuingTasks[i].CurrentETaskStatus == ETaskStatus.FINISH)
+                  {
+                      continuingTasks.Remove(continuingTasks[i]);
+                  }
+              }
+
+              yield return null;
+          }
+            
+          isExecuteFinished?.Invoke();
+      }
+
+  }
+  ```
   
 - ### Camera System
 
-  This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time.
+  This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time. 
 
 
 - ### Dialogue System
@@ -417,10 +520,6 @@ Assets\TestSystems\TestScripts
     public Action<Vector2> OnMouseDragged;
     public Action<Vector2> OnMouseReleased;
     ```
-    
-- ### Executable System // task ve priority system
-
-  This system allows you to assign to keys specific functions or tasks.
 
 - ### Button Activity
 
