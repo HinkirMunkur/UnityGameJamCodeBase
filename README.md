@@ -199,8 +199,23 @@ Assets\TestSystems\TestScripts
 - ### Input System
 
   This system consists of two different classes where one for touch and the other for mouse click. Both have three actions for an input where first object can be touched/clicked, second dragging/moving and the third is    released.
-
-
+  - #### Usage:
+    To use the desired device, either the "MouseInputSystemManager" or "TouchInputSystemManager" should be present in the scene and we should activate the "Enable Input Listener" boolean in these scripts. This way, our system will be able to detect holding, dragging, and releasing actions. We can then create an instance of the "Input System Manager" and connect to these actions from anywhere we want to perform the necessary operations.
+    
+    TouchInputSystemManager Actions
+    ```C#
+    public Action<Vector2> OnTouchBegin;
+    public Action<Vector2> OnTouchMoved;
+    public Action<Vector2> OnTouchEnd;
+    ```
+    
+    MouseInputSystemManager Actions
+    ```C#
+    public Action<Vector2> OnMouseLeftClicked;
+    public Action<Vector2> OnMouseDragged;
+    public Action<Vector2> OnMouseReleased;
+    ```
+    
 - ### Executable System // task ve priority system
 
   This system allows you to assign to keys specific functions or tasks.
