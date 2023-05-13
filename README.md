@@ -315,7 +315,8 @@ Assets\TestSystems\TestScripts
     
     Here's a "level passed" sound effect produced using this feature:
     
-    https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/9317dc6f-551d-4614-b46a-ceff3d7e0001
+
+    https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/14707689-2445-4590-b11d-d9c0288e33d0
     
 
 - ### Transition System
@@ -342,7 +343,8 @@ Assets\TestSystems\TestScripts
     }
     ```
    
-    ![CycleSceneTransition](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/456167dc-aa4b-427b-99f2-34aa8f45f415)
+  ![CycleSceneTransition](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/16fe8277-e027-4269-af55-d240c9be6fc9)
+
 
 - ### Animation System
 
@@ -541,7 +543,8 @@ Assets\TestSystems\TestScripts
   
   Broad Description of Dialogue System: https://github.com/BoraKaraaa/UnityDialogueSystemTMP
   
-  ![Untitled video - Made with Clipchamp (2)](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/7c6d3c7e-4345-438a-ada2-4bfcfeeee81e)
+  ![Untitled video - Made with Clipchamp (2)](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/5de0b211-7aed-4bd8-809d-910dbcf94fc2)
+
 
   
 - ### Input System
@@ -604,11 +607,11 @@ You can access these tools by clicking "Tools" bar
 
 1. It is necessary to set the EditMode boolean value to false on the ManagerSceneController located in the ManagerScene.
 
-  ![Screenshot 2023-05-13 053959](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/fc432333-c043-4c7d-a0bf-4162582e1b83)
+    ![Screenshot 2023-05-13 053959](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/fc432333-c043-4c7d-a0bf-4162582e1b83)
 
 2. Remove all the Scripting Define Symbols in ProjectSettings/Player/OtherSettings/ScriptCompilation. Click on the "Apply" button to save the changes.
 
-  ![Screenshot 2023-05-13 053439](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/1e59f75e-1c7e-4521-9978-1cd94f18ca9b)
+    ![Screenshot 2023-05-13 053439](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/1e59f75e-1c7e-4521-9978-1cd94f18ca9b)
 
 ## References
 
