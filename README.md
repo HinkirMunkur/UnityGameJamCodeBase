@@ -600,3 +600,16 @@ You can access these tools by clicking "Tools" bar
   
   ![Screenshot 2023-05-13 050059](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/4857bcb3-1fd5-4773-936a-1e3afcfe6196)
 
+## Before Build Project
+
+1. It is necessary to set the EditMode boolean value to false on the ManagerSceneController located in the ManagerScene.
+
+![Screenshot 2023-05-13 053422](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/d5c62a13-5568-4e29-9405-b4dfd43d56de)
+
+2. Remove all the Scripting Define Symbols in ProjectSettings/Player/OtherSettings/ScriptCompilation. Click on the "Apply" button to save the changes.
+
+![Screenshot 2023-05-13 053439](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/8824dd47-da99-4556-b266-3e18363be70c)
+
+
+
+
