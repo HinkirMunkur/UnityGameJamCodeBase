@@ -413,79 +413,79 @@ Assets\TestSystems\TestScripts
     }
     ```
     2.The Executer continuously checks for the completion of an ongoing task based on the ETaskStatus returned by the Run() function, which can take values of START, CONTINUE, or FINISH. If there is an unfinished task, the Executer keeps checking until it is completed. Once all tasks are finished, the isExecuteFinished Action provided as a parameter to the Execute() function is invoked. This Action can be used to check if all tasks have completed. 
-  ```C#
-  public sealed class Executer : SingletonnPersistent<Executer>
-  {
-      private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
+    ```C#
+    public sealed class Executer : SingletonnPersistent<Executer>
+    {
+        private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
 
-      public void Execute(Transform taskHolder, Action isExecuteFinished = null)
-      {
-          List<IExecuteable> continuingTasks = new List<IExecuteable>();
-                
-          if (taskDictionary.ContainsKey(taskHolder))
-          {
-              foreach (var task in taskDictionary[taskHolder])
-              {
-                  if (task.Run() == ETaskStatus.CONTINUE)
-                  {
-                        continuingTasks.Add(task);
-                  }
-              }
+        public void Execute(Transform taskHolder, Action isExecuteFinished = null)
+        {
+            List<IExecuteable> continuingTasks = new List<IExecuteable>();
 
-              if (continuingTasks.Count > 0)
-              {
-                  StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
-              }
-              else
-              {
-                  isExecuteFinished?.Invoke();
-              }
+            if (taskDictionary.ContainsKey(taskHolder))
+            {
+                foreach (var task in taskDictionary[taskHolder])
+                {
+                    if (task.Run() == ETaskStatus.CONTINUE)
+                    {
+                          continuingTasks.Add(task);
+                    }
+                }
 
-              return;
-          }
+                if (continuingTasks.Count > 0)
+                {
+                    StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+                }
+                else
+                {
+                    isExecuteFinished?.Invoke();
+                }
 
-          IExecuteable[] executeableTasks = taskHolder.GetComponents<IExecuteable>();
-            
-          taskDictionary.Add(taskHolder, executeableTasks);
+                return;
+            }
 
-          foreach (var task in executeableTasks)
-          {
-              if (task.Run() == ETaskStatus.CONTINUE)
-              {
-                  continuingTasks.Add(task);
-              }
-          }
-            
-          if (continuingTasks.Count > 0)
-          {
-              StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
-          }
-          else
-          {
-              isExecuteFinished?.Invoke();
-          }
-      }
+            IExecuteable[] executeableTasks = taskHolder.GetComponents<IExecuteable>();
 
-      private IEnumerator CheckUntilTasksFinished(List<IExecuteable> continuingTasks, Action isExecuteFinished)
-      {
-          while (continuingTasks.Count != 0)
-          {
-              for (int i = continuingTasks.Count-1; i >= 0; i--)
-              {
-                  if (continuingTasks[i].CurrentETaskStatus == ETaskStatus.FINISH)
-                  {
-                      continuingTasks.Remove(continuingTasks[i]);
-                  }
-              }
+            taskDictionary.Add(taskHolder, executeableTasks);
 
-              yield return null;
-          }
-            
-          isExecuteFinished?.Invoke();
-      }
+            foreach (var task in executeableTasks)
+            {
+                if (task.Run() == ETaskStatus.CONTINUE)
+                {
+                    continuingTasks.Add(task);
+                }
+            }
 
-  }
-  ```
+            if (continuingTasks.Count > 0)
+            {
+                StartCoroutine(CheckUntilTasksFinished(continuingTasks, isExecuteFinished));
+            }
+            else
+            {
+                isExecuteFinished?.Invoke();
+            }
+        }
+
+        private IEnumerator CheckUntilTasksFinished(List<IExecuteable> continuingTasks, Action isExecuteFinished)
+        {
+            while (continuingTasks.Count != 0)
+            {
+                for (int i = continuingTasks.Count-1; i >= 0; i--)
+                {
+                    if (continuingTasks[i].CurrentETaskStatus == ETaskStatus.FINISH)
+                    {
+                        continuingTasks.Remove(continuingTasks[i]);
+                    }
+                }
+
+                yield return null;
+            }
+
+            isExecuteFinished?.Invoke();
+        }
+
+    }
+    ```
   
 - ### Camera System
 
