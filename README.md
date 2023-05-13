@@ -506,34 +506,34 @@ Assets\TestSystems\TestScripts
 
   This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time. For example, in a two-player game, we need to use one camera system for each player, and this camera system can contain as many virtual cameras as desired within itself.
   - #### Usage:
-  1.The Camera System is an abstract and generic class that allows us to create our own camera system by inheriting it and then defining the types of virtual cameras that will be included in our camera system as an Enum. We need to set this Enum as the generic value of the base class.
-  ```C#
-  public enum EGameCameraType
-  {
-      PreGameCamera,
-      InGameCamera,
-      PostGameCamera
-  }
+    1.The Camera System is an abstract and generic class that allows us to create our own camera system by inheriting it and then defining the types of virtual cameras that will be included in our camera system as an Enum. We need to set this Enum as the generic value of the base class.
+    ```C#
+    public enum EGameCameraType
+    {
+        PreGameCamera,
+        InGameCamera,
+        PostGameCamera
+    }
 
-  public class GameCameraSystem : CameraSystem<EGameCameraType>
-  {
-  }
-  ```
-  2.We need to inherit the abstract and generic VirtualCamera class to create each virtual camera we want, and we need to provide the Enum we created as the generic value.
-  ```C#
-  public class InGameVirtualCamera : VirtualCamera<EGameCameraType>
-  {
+    public class GameCameraSystem : CameraSystem<EGameCameraType>
+    {
+    }
+    ```
+    2.We need to inherit the abstract and generic VirtualCamera class to create each virtual camera we want, and we need to provide the Enum we created as the generic value.
+    ```C#
+    public class InGameVirtualCamera : VirtualCamera<EGameCameraType>
+    {
 
-  }
-  ```
-  3.After setting up the entire system correctly, we can perform camera transitions in any desired class by calling the "SetCamera()" function through the CameraManager instance, and passing the CameraSystem and which VirtualCamera to switch to using the defined Enum values.
-  ```C#
-  public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
-  {
-      ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
-      cameraTransitionSystem.SetCamera(eCameraType);
-  }
-  ```
+    }
+    ```
+    3.After setting up the entire system correctly, we can perform camera transitions in any desired class by calling the "SetCamera()" function through the CameraManager instance, and passing the CameraSystem and which VirtualCamera to switch to using the defined Enum values.
+    ```C#
+    public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
+    {
+        ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
+        cameraTransitionSystem.SetCamera(eCameraType);
+    }
+    ```
   
 - ### Dialogue System
 
