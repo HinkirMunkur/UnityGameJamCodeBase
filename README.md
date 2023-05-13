@@ -592,23 +592,23 @@ Assets\TestSystems\TestScripts
 
 You can access these tools by clicking "Tools" bar
 
-![Screenshot 2023-05-13 045718](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/6d214311-3ae3-4fb6-9917-d1b409516c36)
+![Screenshot 2023-05-13 045718](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/8a3fa9d9-2f5b-42b3-96dd-72ddaeed70fe)
 
 - ### Level Select Window
 
   You can open the Level Select Window to see all of your levels in build index. It allows you to switch between these levels while in Edit mode.
   
-  ![Screenshot 2023-05-13 050059](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/4857bcb3-1fd5-4773-936a-1e3afcfe6196)
+  ![Screenshot 2023-05-13 050059](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/34021b1d-2037-4c8b-a274-495ecef90ae6)
 
 ## Before Build Project
 
 1. It is necessary to set the EditMode boolean value to false on the ManagerSceneController located in the ManagerScene.
 
-![Screenshot 2023-05-13 053959](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/fc432333-c043-4c7d-a0bf-4162582e1b83)
+  ![Screenshot 2023-05-13 053959](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/fc432333-c043-4c7d-a0bf-4162582e1b83)
 
 2. Remove all the Scripting Define Symbols in ProjectSettings/Player/OtherSettings/ScriptCompilation. Click on the "Apply" button to save the changes.
 
-![Screenshot 2023-05-13 053439](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/1e59f75e-1c7e-4521-9978-1cd94f18ca9b)
+  ![Screenshot 2023-05-13 053439](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/1e59f75e-1c7e-4521-9978-1cd94f18ca9b)
 
 ## References
 
