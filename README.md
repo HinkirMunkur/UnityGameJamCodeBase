@@ -575,7 +575,13 @@ Assets\TestSystems\TestScripts
     ```
 ## Editor Tools
 
-You can access these tools by clicking "Tools"
+You can access these tools by clicking "Tools" bar
 
 ![Screenshot 2023-05-13 045718](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/6d214311-3ae3-4fb6-9917-d1b409516c36)
+
+- ### Level Select Window
+
+  You can open the Level Select Window to see all of your levels in build index. It allows you to switch between these levels while in Edit mode.
+  
+  ![Screenshot 2023-05-13 050059](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/4857bcb3-1fd5-4773-936a-1e3afcfe6196)
 
