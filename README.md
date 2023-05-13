@@ -604,11 +604,11 @@ You can access these tools by clicking "Tools" bar
 
 1. It is necessary to set the EditMode boolean value to false on the ManagerSceneController located in the ManagerScene.
 
-![Screenshot 2023-05-13 053422](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/d5c62a13-5568-4e29-9405-b4dfd43d56de)
+  ![Screenshot 2023-05-13 053959](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/2bc12f5f-204c-4db3-90c3-17ad8d5981fb)
 
 2. Remove all the Scripting Define Symbols in ProjectSettings/Player/OtherSettings/ScriptCompilation. Click on the "Apply" button to save the changes.
 
-![Screenshot 2023-05-13 053439](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/8824dd47-da99-4556-b266-3e18363be70c)
+  ![Screenshot 2023-05-13 053439](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/8824dd47-da99-4556-b266-3e18363be70c)
 
 
 
