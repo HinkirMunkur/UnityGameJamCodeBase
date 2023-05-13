@@ -140,6 +140,7 @@ Assets\TestSystems\TestScripts
     ```
 
     3.Inside the DatabaseManager, we need to define our inherited RecordedDataHandlers as properties and initialize them within the "InitRecordedDataHandlers()" function.
+    (Part of a DatabaseManager Class)
     ```C#
     public sealed class DatabaseManager : SingletonnPersistent<DatabaseManager>
     {
