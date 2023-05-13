@@ -348,7 +348,7 @@ Assets\TestSystems\TestScripts
 
   This system ease you to create animations and transitions between them without the overhead of using Unity's Animator.
   - #### Usage:
-    A class should be created that inherits AnimationController, takes an enum that represents the desired animations as a generic type, and is placed in an object that has an animator component. For the "Set Proper Animations" button inside our created controller class to work, the names of the created animations must include the corresponding enum's name for each animation. For example, if the animation name is "playerIdle", the enum name could be "IDLE". 
+    1.A class should be created that inherits AnimationController, takes an enum that represents the desired animations as a generic type, and is placed in an object that has an animator component. For the "Set Proper Animations" button inside our created controller class to work, the names of the created animations must include the corresponding enum's name for each animation. For example, if the animation name is "playerIdle", the enum name could be "IDLE". 
     ```C#
     public enum EPlayerAnimation
     {
@@ -362,7 +362,7 @@ Assets\TestSystems\TestScripts
     }
     ```
    
-    Then it can be used as "PlayAnimation". After sending the "OnAnimationFinished" action as a parameter to "PlayAnimation()", the callback function will be triggered at the end of the animation playback.
+    2.Then it can be used as "PlayAnimation". After sending the "OnAnimationFinished" action as a parameter to "PlayAnimation()", the callback function will be triggered at the end of the animation playback.
     ```C#
     public void PlayAnimation(EAnimationType animationType, int layer = 0, 
             Action OnAnimationFinished = null)
@@ -489,9 +489,37 @@ Assets\TestSystems\TestScripts
   
 - ### Camera System
 
-  This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time. 
+  This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time. For example, in a two-player game, we need to use one camera system for each player, and this camera system can contain as many virtual cameras as desired within itself.
+  - #### Usage:
+  1.The Camera System is an abstract and generic class that allows us to create our own camera system by inheriting it and then defining the types of virtual cameras that will be included in our camera system as an Enum. We need to set this Enum as the generic value of the base class.
+  ```C#
+  public enum EGameCameraType
+  {
+      PreGameCamera,
+      InGameCamera,
+      PostGameCamera
+  }
 
+  public class GameCameraSystem : CameraSystem<EGameCameraType>
+  {
+  }
+  ```
+  2.We need to inherit the abstract and generic VirtualCamera class to create each virtual camera we want, and we need to provide the Enum we created as the generic value.
+  ```C#
+  public class InGameVirtualCamera : VirtualCamera<EGameCameraType>
+  {
 
+  }
+  ```
+  3.After setting up the entire system correctly, we can perform camera transitions in any desired class by calling the "SetCamera()" function through the CameraManager instance, and passing the CameraSystem and which VirtualCamera to switch to using the defined Enum values.
+  ```C#
+  public void SetCamera(ECameraSystem eCameraSystem, Enum eCameraType)
+  {
+      ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
+      cameraTransitionSystem.SetCamera(eCameraType);
+  }
+  ```
+  
 - ### Dialogue System
 
   Unity TMP Dialogue System that provides creating simple dialogues with custom text effects.
@@ -505,7 +533,7 @@ Assets\TestSystems\TestScripts
 
   This system consists of two different classes where one for touch and the other for mouse click. Both have three actions for an input where first object can be touched/clicked, second dragging/moving and the third is    released.
   - #### Usage:
-    To use the desired device, either the "MouseInputSystemManager" or "TouchInputSystemManager" should be present in the scene and we should activate the "Enable Input Listener" boolean in these scripts. This way, our system will be able to detect holding, dragging, and releasing actions. We can then create an instance of the "Input System Manager" and connect to these actions from anywhere we want to perform the necessary operations.
+    1.To use the desired device, either the "MouseInputSystemManager" or "TouchInputSystemManager" should be present in the scene and we should activate the "Enable Input Listener" boolean in these scripts. This way, our system will be able to detect holding, dragging, and releasing actions. We can then create an instance of the "Input System Manager" and connect to these actions from anywhere we want to perform the necessary operations.
     
     TouchInputSystemManager Actions
     ```C#
@@ -525,7 +553,7 @@ Assets\TestSystems\TestScripts
 
   This system allows you to assign to buttons specific function.
   - #### Usage:
-    By inheriting the Button Activity class, we can create a class which stands in the object that has a button component. After that, we define the function that we want our button to perform when clicked inside the "OnPointerClick()" method, so our button is ready to use.
+    1.By inheriting the Button Activity class, we can create a class which stands in the object that has a button component. After that, we define the function that we want our button to perform when clicked inside the "OnPointerClick()" method, so our button is ready to use.
     ```C#
     [RequireComponent(typeof(Button))]
     public abstract class ButtonActivity : MonoBehaviour, IPointerClickHandler
@@ -545,4 +573,9 @@ Assets\TestSystems\TestScripts
         public abstract void OnPointerClick(PointerEventData eventData);
     }
     ```
+## Editor Tools
+
+You can access these tools by clicking "Tools"
+
+![Screenshot 2023-05-13 045718](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/6d214311-3ae3-4fb6-9917-d1b409516c36)
 
