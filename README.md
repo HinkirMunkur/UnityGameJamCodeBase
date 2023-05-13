@@ -486,6 +486,21 @@ Assets\TestSystems\TestScripts
 
     }
     ```
+    3.The Executer stores the tasks it retrieves from the Transform component in a dictionary to avoid the cost of recreating the component using "GetComponentInChildren" every time the task needs to be executed. However, this approach comes at the cost of using more memory. If the task needs to be executed only once, it can be executed using the "ExecuteTasksOnce()" method in the ExtensionBase class.
+  ```C#
+  public static class ExtensionBase
+  {
+      public static void ExecuteTasksOnce(this Transform taskHolder)
+      {
+          IExecuteable[] executeableTasks = taskHolder.GetComponents<IExecuteable>();
+
+          foreach (var task in executeableTasks)
+          {
+              task.Run();
+          }
+      }
+  }
+  ```
   
 - ### Camera System
 
