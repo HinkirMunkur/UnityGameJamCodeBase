@@ -343,7 +343,7 @@ Assets\TestSystems\TestScripts
     }
     ```
    
-  ![CycleSceneTransition](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/16fe8277-e027-4269-af55-d240c9be6fc9)
+    ![CycleSceneTransition](https://github.com/HinkirMunkur/UnityGameJamCodeBase/assets/72511237/16fe8277-e027-4269-af55-d240c9be6fc9)
 
 
 - ### Animation System
