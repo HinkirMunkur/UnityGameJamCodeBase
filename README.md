@@ -412,7 +412,7 @@ Assets\TestSystems\TestScripts
         public abstract ETaskStatus Run();
     }
     ```
-    2.The Executer continuously checks for the completion of an ongoing task based on the ETaskStatus returned by the Run() function, which can take values of START, CONTINUE, or FINISH. If there is an unfinished task, the Executer keeps checking until it is completed. Once all tasks are finished, the isExecuteFinished Action provided as a parameter to the Execute() function is invoked. This Action can be used to check if all tasks have completed. 
+    2.The Executer continuously checks for the completion of an ongoing task based on the ETaskStatus returned by the "Run()" function, which can take values of START, CONTINUE, or FINISH. If there is an unfinished task, the Executer keeps checking until it is completed. Once all tasks are finished, the isExecuteFinished Action provided as a parameter to the "Execute()" function is invoked. This Action can be used to check if all tasks have completed. 
     ```C#
     public sealed class Executer : SingletonnPersistent<Executer>
     {
