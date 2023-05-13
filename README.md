@@ -157,9 +157,168 @@ Assets\TestSystems\TestScripts
 
 - ### Audio System
 
+  AudioManager allows us to play musics and sound effects, stop them, change their volume by using its API. Most unique feature of the AudioManager is continuing playing a music across scenes, and producing custom sound effects in the code by providing notes and octaves.
+  - ### Usage:
+     1.AudioManager is a singleton class and is should be initialized at the start of a game, you can access its API by calling its instance from any scene in the game. The AudioManager can hold all the musics and sound effects in your game in the form of scriptable objects. You must create either a "Music" or a "SoundEffect" scriptable object depending on your needs.
+
+    Music scriptable object properties:
+    ```C#
+    public AudioClip audioClip;
+    public string audioName;
+    
+    [Range(0f, 1f)]
+    public float volume;
+
+    [Range(-3f, 3f)]
+    public float pitch;
+
+    public bool isLooping = false;
+
+    public float delay = 0;
+    ``` 
+    SoundEffect scriptable object properties:
+    ```C#
+    public AudioClip audioClip;
+    public string audioName;
+
+    [Range(0f, 1f)]
+    public float volume;
+    ``` 
+    You can modify the values in the scriptable objects to your needs. Then, created "Music" and "SoundEffect" scriptable objects should be referenced by the AudioManager in lists _musicList and _soundEffectList respectively where the AudioManager is initialized. Finally the musics and the sound effects can be played using "PlayMusic" and "PlaySoundEffect" functions using the "audioName" determined in the scriptable objects.
+    
+    
+    ```C#
+    public void PlayMusic(string musicName)
+    {
+        foreach (Music music in _musicList)
+        {
+            if (musicName.Equals(music.audioName))
+            {
+                // Assign the necessary information from the scriptable object
+                _musicAudioSource.clip = music.audioClip;
+                _musicAudioSource.volume = music.volume;
+                _musicAudioSource.pitch = music.pitch;
+                _musicAudioSource.loop = music.isLooping;
+
+                // Play the audio source
+                _musicAudioSource.Play();
+                _isMusicPlaying = true;
+
+                break;
+            }
+        }
+    }
+    ```
+    ```C#
+    public void PlaySoundEffect(string audioName)
+    {
+        foreach (SoundEffect soundEffect in _soundEffectList)
+        {
+            if (audioName.Equals(soundEffect.audioName))
+            {
+                // Play the audio source
+                _soundEffectAudioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
+
+                break;
+            }
+        }
+    }
+    ```
+    
+    2.The music being played by the AudioManager will not stop when the scene is changed by default. If you want to change music across scenes, "StopMusic" function should be called before scene is changed, the new music should be played using "PlayMusic" function again when the new scene starts. 
+
+    ```C#
+    public void StopMusic()
+    {
+        _musicAudioSource.Stop();
+        _isMusicPlaying = false;
+        _musicAudioSource.clip = null;
+    }
+    ```
+    
+    3.Another feature of the AudioManager is changing the volume of a music over a period of time using the "ChangeMusicVolume". This function takes "newVolume" and "duration" parameters. The volume of the music is changed to "newVolume" over "duration" period of time. However, this is temporary change: when the music played again later, the music will be played with its original volume.
+
+    ```C#
+    public void ChangeMusicVolume(float newVolume, float duration = 0)
+    {
+        StartCoroutine(ChangeMusicVolumeCoroutine(newVolume, duration));
+    }
+    ```
+    ```C#
+    private IEnumerator ChangeMusicVolumeCoroutine(float newVolume, float duration)
+    {
+        // Duration cannot be negative.
+        if (duration < 0)
+        {
+            Debug.Log("Duration must be positive.");
+            yield break;
+        }
+
+        // Change volume in a specified period of time.
+        // If the duration is 0, then change the volume immediately.
+        if (duration == 0)
+        {
+            _musicAudioSource.volume = newVolume;
+            yield break;
+        }
+
+        // This interval is the amount of volume change every 1 milliseconds.
+        var interval = (newVolume - _musicAudioSource.volume) / (duration * 100);
+        for (int i = 0; i < ((int)duration * 100); i++)
+        {
+            _musicAudioSource.volume += interval;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    ```
+    
+    4.Last unique feature of the AudioManager is producing custom sound effects in code using a track string. Example format is the following: "C4-D4-E4"
+         Letters represent the note, and number represent the octave.
+         [C: Do, D: Re, E: Mi, F: Fa, G: Sol, A: La, B: Si]
+         Interval of the notes that can be played: [G3-C5] (G3 being the lowest, C5 being the highest)
+         Example sound effects:
+             - Collectible Pick-up sound: "F4-A5"
+             - Door Closing: "B4-G3"
+             - Door Opening: "G3-B4"
+
+    ```C#
+    public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .06f)
+    {
+        StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
+    }
+    ```
+    ```C#
+    private IEnumerator PlayCustomSoundEffectCoroutine(string track, float timeBetweenNotes)
+    {
+        // Convert to all upper letters
+        track = track.ToUpper() + "-";
+        string currentNote = "";
+
+        // For each note in the track...
+        for (int i = 0; i < track.Length; i++)
+        {
+            if (track[i] != '-')
+            {
+                currentNote += track[i];
+            }
+            else
+            {
+                _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[currentNote]);
+                _customSoundEffectAudioSource.PlayOneShot(_blip);
+
+                currentNote = "";
+            }
+            yield return new WaitForSeconds(timeBetweenNotes);
+        }
+    }
+    ```
+    
+    Here's a "level passed" sound effect produced using this feature:
+    
+
 - ### Transition System
 
-  The aim is to record various scene transitions and enable their utilization in a desired manner on your projeckts.
+  The aim is to record various scene transitions and enable their utilization in a desired manner on your projects.
   - #### Usage:
     1.By inheriting the Transition class and overriding the necessary functions, we can create the transitions that we want. After registering these transitions in the required enum, our system will be ready to use them. Once we have selected the desired transition to use for scene opening or closing via the Transition Manager, we can create a transition reference by clicking the "Create transition references" button to use it.
     ```C#
