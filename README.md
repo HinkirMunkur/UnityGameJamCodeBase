@@ -153,7 +153,7 @@ Assets\TestSystems\TestScripts
           }
     }
     ```
-    4.
+    4.To optimize the database system, we have added two boolean variables, IsLoaded and IsDirty, to the abstract RecordedData class for JSON reading and writing operations. IsLoaded bool is used to ensure that the data is not loaded again from JSON once it is loaded. IsDirty bool is used to prevent unnecessary writing to JSON when there is no change made to the data.
 
 - ### Audio System
 
