@@ -182,6 +182,46 @@ Assets\TestSystems\TestScripts
     
     ![CycleSceneTransition](https://github.com/BoraKaraaa/UnityGameJamCodeBase/assets/72511237/456167dc-aa4b-427b-99f2-34aa8f45f415)
 
+- ### Animation System
+
+  This system ease you to create animations and transitions between them without the overhead of using Unity's Animator.
+  - #### Usage:
+    A class should be created that inherits AnimationController, takes an enum that represents the desired animations as a generic type, and is placed in an object that has an animator component. For the "Set Proper Animations" button inside our created controller class to work, the names of the created animations must include the corresponding enum's name for each animation. For example, if the animation name is "playerIdle", the enum name could be "IDLE". 
+    ```C#
+    public enum EPlayerAnimation
+    {
+        IDLE,
+        RUN
+    }
+
+    public class PlayerAnimationController : AnimationController<EPlayerAnimation>
+    {
+
+    }
+    ```
+   
+    Then it can be used as "PlayAnimation". After sending the "OnAnimationFinished" action as a parameter to "PlayAnimation()", the callback function will be triggered at the end of the animation playback.
+    ```C#
+    public void PlayAnimation(EAnimationType animationType, int layer = 0, 
+            Action OnAnimationFinished = null)
+    {
+        if (currentAnimationType.Equals(animationType))
+        {
+            StopAllCoroutines();
+            animator.Rebind();
+        }
+        else
+        {
+            currentAnimationType = animationType;
+            animator.Play(animationTypeNameDictionary[animationType], layer);
+        }
+
+        StartCoroutine(CheckUntilAnimationFinish(animationTypeNameDictionary[animationType], layer,
+            OnAnimationFinished));
+    }
+    ```
+  
+  
 - ### Camera System
 
   This system allows you to create different camera systems which each system have any number of virtual cameras also allowed transition between cameras in-system any time.
@@ -244,8 +284,4 @@ Assets\TestSystems\TestScripts
         public abstract void OnPointerClick(PointerEventData eventData);
     }
     ```
-- ### Animation System
-
-  This system ease you to create animations and transitions between them without the overhead of using Unity's Animator.
-
 
