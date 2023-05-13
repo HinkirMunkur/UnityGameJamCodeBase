@@ -273,9 +273,9 @@ Assets\TestSystems\TestScripts
     ```
     
     4.Last unique feature of the AudioManager is producing custom sound effects in code using a track string. Example format is the following: "C4-D4-E4".
-         Letters represent the note, and number represent the octave:
+         Letters represent the note, and numbers represent the octave:
          [C: Do, D: Re, E: Mi, F: Fa, G: Sol, A: La, B: Si].
-         Interval of the notes that can be played: [G3-C5] (G3 being the lowest, C5 being the highest).
+         Interval of the notes that can be played are [G3-C5] (G3 being the lowest, C5 being the highest).
          Example sound effects:
          Collectible Pick-up sound: "F4-A5",
          Door Closing: "B4-G3",
