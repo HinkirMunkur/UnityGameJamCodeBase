@@ -45,10 +45,12 @@ namespace Munkur
         public void PlayAnimation(EAnimationType animationType, int layer = 0, 
             Action OnAnimationFinished = null)
         {
+            StopAllCoroutines();
+            
             if (currentAnimationType.Equals(animationType))
             {
-                StopAllCoroutines();
                 animator.Rebind();
+                animator.Play(animationTypeNameDictionary[currentAnimationType], layer);
             }
             else
             {
@@ -67,7 +69,7 @@ namespace Munkur
             {
                 yield return null;
             }
-
+            
             OnAnimationFinished?.Invoke();
         }
 
