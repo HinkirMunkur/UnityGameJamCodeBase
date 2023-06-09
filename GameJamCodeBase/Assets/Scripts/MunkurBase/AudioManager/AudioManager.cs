@@ -12,7 +12,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using EasyButtons;
 using UnityEngine;
 
 namespace Munkur 
@@ -21,9 +20,11 @@ namespace Munkur
     {
         [SerializeField]
         private Music[] _musicList;
+        private Dictionary<string, Music> _musicDict = new Dictionary<string, Music>();
 
         [SerializeField]
         private SoundEffect[] _soundEffectList;
+        private Dictionary<string, SoundEffect> _soundEffectDict = new Dictionary<string, SoundEffect>();
 
         [SerializeField]
         private AudioSource _musicAudioSource;
@@ -46,6 +47,17 @@ namespace Munkur
 
         public void Start()
         {
+            // Create music and sound effect dictionaries.
+            for (int i = 0; i < _musicList.Length; i++) 
+            {
+                _musicDict.Add(_musicList[i].audioName, _musicList[i]);
+            }
+
+            for (int i = 0; i < _soundEffectList.Length; i++) 
+            {
+                _soundEffectDict.Add(_soundEffectList[i].audioName, _soundEffectList[i]);
+            }
+
             // Generate sound effect audio sources.
             GenerateSoundEffectAudioSources();
 
@@ -103,29 +115,17 @@ namespace Munkur
         */
         public void PlaySoundEffect(string audioName)
         {
-            SoundEffect soundEffectToPlay = null;
-
-            // Find the audio from the list.
-            foreach (SoundEffect soundEffect in _soundEffectList)
-            {
-                if (audioName.Equals(soundEffect.audioName))
-                {
-                    soundEffectToPlay = soundEffect;
-
-                    if (!soundEffectToPlay.isLooping) 
-                    {
-                        _musicAudioSource.PlayOneShot(soundEffectToPlay.audioClip, soundEffectToPlay.volume);
-                        return;
-                    }
-
-                    break;
-                }
-            }
+            SoundEffect soundEffectToPlay = _soundEffectDict[audioName];
 
             if (!soundEffectToPlay) 
             {
-                Debug.Log("Sound effect could not be found");
+                Debug.LogError("Sound effect could not be found");
                 return;
+            }
+
+            if (!soundEffectToPlay.isLooping) 
+            {
+                _customSoundEffectAudioSource.PlayOneShot(soundEffectToPlay.audioClip, soundEffectToPlay.volume);
             }
 
             // Find a free sound effect audio source.
@@ -149,7 +149,7 @@ namespace Munkur
 
             if (!isThereSpace) 
             {
-                Debug.Log("There is no more space for looping sound effects!");
+                Debug.LogError("There is no more space for looping sound effects!");
             }
         }
 
@@ -160,22 +160,11 @@ namespace Munkur
         */
         public void StopSoundEffect(string audioName) 
         {
-            SoundEffect soundEffectToStop = null;
-
-            // Find the audio from the list.
-            foreach (SoundEffect soundEffect in _soundEffectList)
-            {
-                if (audioName.Equals(soundEffect.audioName))
-                {
-                    soundEffectToStop = soundEffect;
-
-                    break;
-                }
-            }
+            SoundEffect soundEffectToStop = _soundEffectDict[audioName];
 
             if (!soundEffectToStop) 
             {
-                Debug.Log("Sound effect could not be found");
+                Debug.LogError("Sound effect could not be found");
                 return;
             }
 
@@ -200,23 +189,20 @@ namespace Munkur
         */
         public void PlayMusic(string musicName)
         {
-            foreach (Music music in _musicList)
+            Music music = _musicDict[musicName];
+
+            if (!music) 
             {
-                if (musicName.Equals(music.audioName))
-                {
-                    // Assign the necessary information from the scriptable object
-                    _musicAudioSource.clip = music.audioClip;
-                    _musicAudioSource.volume = music.volume;
-                    _musicAudioSource.pitch = music.pitch;
-                    _musicAudioSource.loop = music.isLooping;
-
-                    // Play the audio source
-                    _musicAudioSource.Play();
-                    _isMusicPlaying = true;
-
-                    break;
-                }
+                Debug.LogError("Music could not be found!");
             }
+
+            _musicAudioSource.clip = music.audioClip;
+            _musicAudioSource.volume = music.volume;
+            _musicAudioSource.pitch = music.pitch;
+            _musicAudioSource.loop = music.isLooping;
+
+            _musicAudioSource.Play();
+            _isMusicPlaying = true;
         }
 
         /**
@@ -356,7 +342,7 @@ namespace Munkur
         /// </summary>
         /// <param name="track"></param> is the set of notes.
         /// <param name="timeBetweenNotes"></param> is the time interval between any two notes.
-        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .06f)
+        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = 0.06f)
         {
             StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
         }
