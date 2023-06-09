@@ -12,6 +12,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using EasyButtons;
 using UnityEngine;
 
 namespace Munkur 
@@ -28,7 +29,8 @@ namespace Munkur
         private AudioSource _musicAudioSource;
 
         [SerializeField]
-        private AudioSource _soundEffectAudioSource;
+        private int _soundEffectAudioSourceCount;
+        private List<AudioSource> _soundEffectAudioSources = new List<AudioSource>();
 
         [SerializeField]
         private AudioSource _customSoundEffectAudioSource;
@@ -42,8 +44,15 @@ namespace Munkur
         private bool _isMusicPlaying;
         public bool IsMusicPlaying => _isMusicPlaying;
 
-        private void Start()
+        public void Start()
         {
+            // Generate sound effect audio sources.
+            GenerateSoundEffectAudioSources();
+
+            // Set music and sound effect volumes.
+            SetMusicVolume(-10);
+            SetSoundEffectVolume(-10);
+
             // Declarations
             _isMusicPlaying = false;
 
@@ -67,28 +76,119 @@ namespace Munkur
                 ["E5"] = 12,
                 ["F5"] = 13
             };
+        }
 
-            SetMusicVolume(-10);
-            SetSoundEffectVolume(-10);
+        
+        /**
+        * <summary>
+        * This function is used to populate the _soundEffectAudioSources list.
+        * </summary>
+        */
+        private void GenerateSoundEffectAudioSources() 
+        {
+            for (int i = 0; i < _soundEffectAudioSourceCount; i++) 
+            {
+                AudioSource audioSourceToAdd = gameObject.AddComponent<AudioSource>();
+                _soundEffectAudioSources.Add(audioSourceToAdd);
+                audioSourceToAdd.playOnAwake = false;
+                audioSourceToAdd.outputAudioMixerGroup = _customSoundEffectAudioSource.outputAudioMixerGroup;
+            }
         }
 
         /**
         * <summary>
-        * This function should only be used when playing music.
+        * This function should only be used when playing sound effect.
         * <paramref name="audioName"/> is the name of the sound effect to be played.
         * </summary>
         */
         public void PlaySoundEffect(string audioName)
         {
+            SoundEffect soundEffectToPlay = null;
+
+            // Find the audio from the list.
             foreach (SoundEffect soundEffect in _soundEffectList)
             {
                 if (audioName.Equals(soundEffect.audioName))
                 {
-                    // Play the audio source
-                    _soundEffectAudioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
+                    soundEffectToPlay = soundEffect;
+
+                    if (!soundEffectToPlay.isLooping) 
+                    {
+                        _musicAudioSource.PlayOneShot(soundEffectToPlay.audioClip, soundEffectToPlay.volume);
+                        return;
+                    }
 
                     break;
                 }
+            }
+
+            if (!soundEffectToPlay) 
+            {
+                Debug.Log("Sound effect could not be found");
+                return;
+            }
+
+            // Find a free sound effect audio source.
+            bool isThereSpace = false;
+
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                if (!soundEffectAudioSource.clip) 
+                {
+                    isThereSpace = true;
+
+                    soundEffectAudioSource.clip = soundEffectToPlay.audioClip;
+                    soundEffectAudioSource.volume = soundEffectToPlay.volume;
+                    soundEffectAudioSource.loop = soundEffectToPlay.isLooping;
+
+                    soundEffectAudioSource.Play();
+
+                    break;
+                } 
+            }
+
+            if (!isThereSpace) 
+            {
+                Debug.Log("There is no more space for looping sound effects!");
+            }
+        }
+
+        /**
+        * <summary>
+        * This function should only be used when stopping sound effect.
+        * </summary>
+        */
+        public void StopSoundEffect(string audioName) 
+        {
+            SoundEffect soundEffectToStop = null;
+
+            // Find the audio from the list.
+            foreach (SoundEffect soundEffect in _soundEffectList)
+            {
+                if (audioName.Equals(soundEffect.audioName))
+                {
+                    soundEffectToStop = soundEffect;
+
+                    break;
+                }
+            }
+
+            if (!soundEffectToStop) 
+            {
+                Debug.Log("Sound effect could not be found");
+                return;
+            }
+
+            // Find the audio source holding the sound effect.
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                if (soundEffectAudioSource.clip == soundEffectToStop.audioClip) 
+                {
+                    soundEffectAudioSource.Stop();
+                    soundEffectAudioSource.clip = null;
+
+                    break;
+                } 
             }
         }
 
@@ -121,7 +221,7 @@ namespace Munkur
 
         /**
         * <summary>
-        * This function should only be used when playing music.
+        * This function should only be used when stopping music.
         * </summary>
         */
         public void StopMusic()
@@ -146,7 +246,7 @@ namespace Munkur
         /// <param name="newVolume"></param> is the new volume to be set for sound effects.
         public void SetSoundEffectVolume(float newVolume)
         {
-            _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
+            _customSoundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
         }
 
         /// <summary>
@@ -164,7 +264,10 @@ namespace Munkur
         /// <param name="mute"></param> is the flag for mute or unmute.
         public void MuteSoundEffect(bool mute)
         {
-            _soundEffectAudioSource.mute = mute;  
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                soundEffectAudioSource.mute = mute;
+            }
             _customSoundEffectAudioSource.mute = mute; 
         }
 

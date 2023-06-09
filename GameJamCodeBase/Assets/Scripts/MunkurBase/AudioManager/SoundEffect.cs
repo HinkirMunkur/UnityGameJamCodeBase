@@ -10,4 +10,6 @@ public class SoundEffect : ScriptableObject
 
     [Range(0f, 1f)]
     public float volume;
+
+    public bool isLooping;
 }

@@ -17,7 +17,7 @@ public class AudioTest : MonoBehaviour
     private int _musicVolume;
     private int _soundEffectVolume;
     
-    private void Awake()
+    private void Start()
     {
         _customSoundClick.OnClicked += PlayCustomSound;
         _importSoundClick.OnClicked += PlayImportSound;    
@@ -33,6 +33,7 @@ public class AudioTest : MonoBehaviour
         _soundEffectVolumeText.text = _soundEffectVolume.ToString();
 
         AudioManager.Instance.PlayMusic("TestMusic");
+        AudioManager.Instance.PlaySoundEffect("ImportSoundEffect");
     }
 
     private void OnDestroy() 

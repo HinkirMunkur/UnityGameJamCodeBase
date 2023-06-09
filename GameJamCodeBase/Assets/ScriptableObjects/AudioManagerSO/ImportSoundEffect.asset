@@ -15,3 +15,4 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: ce1bca6f9fa8ee5428d0f0c529df3772, type: 3}
   audioName: ImportSoundEffect
   volume: 1
+  isLooping: 1
