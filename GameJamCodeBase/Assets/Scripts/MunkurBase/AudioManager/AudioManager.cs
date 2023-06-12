@@ -324,8 +324,56 @@ namespace Munkur
                     _customSoundEffectAudioSource.PlayOneShot(_blip);
 
                     currentNote = "";
+                    yield return new WaitForSeconds(timeBetweenNotes / 1000);
                 }
-                yield return new WaitForSeconds(timeBetweenNotes);
+            }
+        }
+
+        private IEnumerator PlayCustomSoundEffectCoroutine(string track, string timeTrack) 
+        {
+            // Convert to all upper letters
+            track = track.ToUpper() + "-";
+            timeTrack = timeTrack + "-";
+            string currentNote = "";
+            string currentTime = "";
+
+            Queue<float> timeIntervals = new Queue<float>();
+
+            for (int i = 0; i < timeTrack.Length; i++) 
+            {
+                if (timeTrack[i] != '-')
+                {
+                    currentTime += timeTrack[i];
+                }
+                else
+                {
+                    timeIntervals.Enqueue(float.Parse(currentTime));
+
+                    currentTime = "";
+                }
+            }
+            
+            
+            float timeBetweenNotes = 0f;
+
+
+            // For each note in the track...
+            for (int i = 0; i < track.Length; i++)
+            {
+
+                if (track[i] != '-')
+                {
+                    currentNote += track[i];
+                }
+                else
+                {
+                    timeBetweenNotes = timeIntervals.Dequeue();
+                    _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[currentNote]);
+                    _customSoundEffectAudioSource.PlayOneShot(_blip);
+
+                    currentNote = "";
+                    yield return new WaitForSeconds(timeBetweenNotes / 1000);
+                }
             }
         }
 
@@ -341,10 +389,15 @@ namespace Munkur
         ///     - Door Opening: "G3-B4"
         /// </summary>
         /// <param name="track"></param> is the set of notes.
-        /// <param name="timeBetweenNotes"></param> is the time interval between any two notes.
-        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = 0.06f)
+        /// <param name="timeBetweenNotes"></param> is the time interval between any two notes in milliseconds.
+        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = 200f)
         {
             StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
+        }
+
+        public void PlayCustomSoundEffect(string track, string timeTrack) 
+        {
+            StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeTrack));
         }
     }
 

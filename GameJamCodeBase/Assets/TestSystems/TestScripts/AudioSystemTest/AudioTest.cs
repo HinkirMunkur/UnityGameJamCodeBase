@@ -34,6 +34,8 @@ public class AudioTest : MonoBehaviour
 
         AudioManager.Instance.PlayMusic("TestMusic");
         AudioManager.Instance.PlaySoundEffect("ImportSoundEffect");
+
+        AudioManager.Instance.PlayCustomSoundEffect("C4-D4-E4-C4-E4-C4-E4", "400-200-400-400-400-400-400");
     }
 
     private void OnDestroy() 
