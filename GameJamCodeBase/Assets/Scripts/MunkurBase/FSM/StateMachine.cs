@@ -20,6 +20,8 @@ namespace Munkur
         protected Dictionary<EState, Action> stateTransitionDictionary;
 
         protected State currentState;
+
+        protected EState eCurrentState;
     
         [Serializable]
         public class StateToClassDictionary
@@ -39,9 +41,14 @@ namespace Munkur
         }
 
         private void Do() => currentState.Do();
+        private void Done() => currentState.Done();
 
         public void DoStateTransition(EState newEStates)
         {
+            // Cannot transition to the same state.
+            if (eCurrentState.Equals(newEStates)) { return; }
+
+            Done();
             stateTransitionDictionary[newEStates]?.Invoke();
         }
     
