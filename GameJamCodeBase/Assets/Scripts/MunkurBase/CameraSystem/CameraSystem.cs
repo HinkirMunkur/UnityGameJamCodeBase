@@ -7,15 +7,21 @@ namespace Munkur
 {
     public interface ICameraTransition
     {
+        public Camera MainCamera { get; }
         public ECameraSystem ECameraSystem { get; }
         public void SetCamera(Enum cameraType);
+        public IVirtualCamera GetActiveVirtualCamera();
     }
 
     public abstract class CameraSystem<ECameraType> : MonoBehaviour, ICameraTransition where ECameraType : Enum
     {
+        [SerializeField] private Camera mainCamera;
+        public Camera MainCamera => mainCamera;
+        
+        
         [SerializeField] private ECameraSystem eCameraSystem;
-
         public ECameraSystem ECameraSystem => eCameraSystem;
+        
         
         [SerializeField] private Transform virtualCameraHolder;
         
@@ -38,7 +44,7 @@ namespace Munkur
 
         private Dictionary<ECameraType, VirtualCamera<ECameraType>> cameraTypeVirtualCameraDictionary;
 
-        private ECameraType currentCameraType;
+        private VirtualCamera<ECameraType> currentVirtualCamera;
 
         public virtual void Awake()
         {
@@ -52,22 +58,27 @@ namespace Munkur
                 cameraTypeVirtualCamera.VirtualCamera.gameObject.SetActive(false);
             }
 
-            currentCameraType = initialCameraType;
+            currentVirtualCamera = cameraTypeVirtualCameraDictionary[initialCameraType];
             cameraTypeVirtualCameraDictionary[initialCameraType].gameObject.SetActive(true);
         }
         
         public void SetCamera(ECameraType cameraType)
         {
-            cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(false);
-            currentCameraType = cameraType;
-            cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(true);
+            cameraTypeVirtualCameraDictionary[currentVirtualCamera.CameraType].gameObject.SetActive(false);
+            currentVirtualCamera = cameraTypeVirtualCameraDictionary[cameraType];
+            cameraTypeVirtualCameraDictionary[currentVirtualCamera.CameraType].gameObject.SetActive(true);
         }
         
         public void SetCamera(Enum cameraType)
         {
-            cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(false);
-            currentCameraType = (ECameraType)cameraType;
-            cameraTypeVirtualCameraDictionary[currentCameraType].gameObject.SetActive(true);
+            cameraTypeVirtualCameraDictionary[currentVirtualCamera.CameraType].gameObject.SetActive(false);
+            currentVirtualCamera = cameraTypeVirtualCameraDictionary[(ECameraType)cameraType];
+            cameraTypeVirtualCameraDictionary[currentVirtualCamera.CameraType].gameObject.SetActive(true);
+        }
+
+        public IVirtualCamera GetActiveVirtualCamera()
+        {
+            return currentVirtualCamera;
         }
         
         private bool CheckEquality(ECameraType val1, ECameraType val2)

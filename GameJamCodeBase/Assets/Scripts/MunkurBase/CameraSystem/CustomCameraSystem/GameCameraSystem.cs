@@ -3,7 +3,7 @@ public enum EGameCameraType
 {
     PreGameCamera,
     InGameCamera,
-    PostGameCamera
+    PostGameCamera,
 }
 
 public class GameCameraSystem : CameraSystem<EGameCameraType>

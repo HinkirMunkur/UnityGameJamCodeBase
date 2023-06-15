@@ -5,14 +5,16 @@ using System;
 
 namespace Munkur
 {
-    public sealed class Executer : SingletonnPersistent<Executer>
+    public sealed class Executer : MonoBehaviour
     {
         private Dictionary<Transform, IExecuteable[]> taskDictionary =  new Dictionary<Transform, IExecuteable[]>();
 
-        public void Execute(Transform taskHolder, Action isExecuteFinished = null)
+        private bool isTaskSuccess = true;
+        public void Execute(Transform taskHolder, Action<bool> isExecuteFinished = null)
         {
             List<IExecuteable> continuingTasks = new List<IExecuteable>();
-                
+            isTaskSuccess = true;
+            
             if (taskDictionary.ContainsKey(taskHolder))
             {
                 foreach (var task in taskDictionary[taskHolder])
@@ -21,6 +23,8 @@ namespace Munkur
                     {
                         continuingTasks.Add(task);
                     }
+
+                    isTaskSuccess &= task.CurrentTaskSuccess;
                 }
 
                 if (continuingTasks.Count > 0)
@@ -29,7 +33,7 @@ namespace Munkur
                 }
                 else
                 {
-                    isExecuteFinished?.Invoke();
+                    isExecuteFinished?.Invoke(isTaskSuccess);
                 }
 
                 return;
@@ -45,6 +49,8 @@ namespace Munkur
                 {
                     continuingTasks.Add(task);
                 }
+                
+                isTaskSuccess &= task.CurrentTaskSuccess;
             }
             
             if (continuingTasks.Count > 0)
@@ -53,11 +59,11 @@ namespace Munkur
             }
             else
             {
-                isExecuteFinished?.Invoke();
+                isExecuteFinished?.Invoke(isTaskSuccess);
             }
         }
 
-        private IEnumerator CheckUntilTasksFinished(List<IExecuteable> continuingTasks, Action isExecuteFinished)
+        private IEnumerator CheckUntilTasksFinished(List<IExecuteable> continuingTasks, Action<bool> isExecuteFinished)
         {
             while (continuingTasks.Count != 0)
             {
@@ -66,13 +72,14 @@ namespace Munkur
                     if (continuingTasks[i].CurrentETaskStatus == ETaskStatus.FINISH)
                     {
                         continuingTasks.Remove(continuingTasks[i]);
+                        isTaskSuccess &= continuingTasks[i].CurrentTaskSuccess;
                     }
                 }
 
                 yield return null;
             }
             
-            isExecuteFinished?.Invoke();
+            isExecuteFinished?.Invoke(isTaskSuccess);
         }
 
     }

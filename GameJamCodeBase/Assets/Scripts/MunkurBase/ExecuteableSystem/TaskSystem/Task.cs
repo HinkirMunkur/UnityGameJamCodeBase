@@ -7,6 +7,13 @@ public interface IExecuteable
         get;
         set;
     }
+    
+    public bool CurrentTaskSuccess
+    {
+        get;
+        set;
+    }
+    
     public ETaskStatus Run();
 }
 
@@ -20,5 +27,6 @@ public enum ETaskStatus
 public abstract class Task : MonoBehaviour, IExecuteable
 {
     public ETaskStatus CurrentETaskStatus { get; set; } = ETaskStatus.START;
+    public bool CurrentTaskSuccess { get; set; } = false;
     public abstract ETaskStatus Run();
 }

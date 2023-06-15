@@ -9,6 +9,6 @@ public class CameraSystemTest : MonoBehaviour
     [Button]
     private void TranslateCameraTo()
     {
-        CameraaManager.Instance.SetCamera(ECameraSystem.GameCameraSystem, eGameCameraType);
+        CameraManager.Instance.SetCamera(ECameraSystem.GameCameraSystem, eGameCameraType);
     }
 }

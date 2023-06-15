@@ -6,7 +6,9 @@ public class Draggable : MonoBehaviour
 {
     [SerializeField] private Camera rayCamera;
     [SerializeField] private LayerMask layer;
-
+    
+    [SerializeField] private bool considerUI;
+    
     public Action OnDragFinished;
     
     private Vector3 currentPosition;
@@ -15,14 +17,14 @@ public class Draggable : MonoBehaviour
 
     private void Awake()
     { 
-        MouseInputSystemManager.Instance.OnMouseDragged += OnDrag;    
-        MouseInputSystemManager.Instance.OnMouseReleased += OnDragEnd;    
+        InputSystemManager.Instance.OnInputStarted += OnDrag;    
+        InputSystemManager.Instance.OnInputFinished += OnDragEnd;    
     }
 
     private void OnDestroy() 
     {
-        MouseInputSystemManager.Instance.OnMouseDragged -= OnDrag;    
-        MouseInputSystemManager.Instance.OnMouseReleased -= OnDragEnd;  
+        InputSystemManager.Instance.OnInputStarted -= OnDrag;    
+        InputSystemManager.Instance.OnInputFinished -= OnDragEnd;  
     }
 
     public virtual void OnDrag(Vector2 mousePosition) 
@@ -32,6 +34,11 @@ public class Draggable : MonoBehaviour
 
         if (ray.collider != null || isBeingDragged) 
         {
+            if (considerUI && StaticUtilitiesBase.IsPointerOverUIObject())
+            {
+                return;
+            }
+            
             isBeingDragged = true;
             currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             currentPosition.z = 0;

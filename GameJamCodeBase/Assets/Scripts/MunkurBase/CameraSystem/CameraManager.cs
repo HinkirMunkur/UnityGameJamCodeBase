@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cinemachine;
 
 public enum ECameraSystem
 {
     GameCameraSystem,
-    Player2CameraSystem,
+    MainMenuCameraSystem,
 }
 
 namespace Munkur
 {
-    public sealed class CameraaManager : Singletonn<CameraaManager>
+    public sealed class CameraManager : Singletonn<CameraManager>
     {
         [SerializeField] private Transform cameraSystemHolder;
         
@@ -33,7 +34,17 @@ namespace Munkur
             ICameraTransition cameraTransitionSystem = GetCameraSystem(eCameraSystem);
             cameraTransitionSystem.SetCamera(eCameraType);
         }
-    
+
+        public CinemachineVirtualCamera GetActiveVirtualCamera(ECameraSystem eCameraSystem)
+        {
+            return GetCameraSystem(eCameraSystem).GetActiveVirtualCamera().CinemachineVirtualCamera;
+        }
+
+        public Camera GetCameraSystemMainCamera(ECameraSystem eCameraSystem)
+        {
+            return cameraSystemDictionary[eCameraSystem].MainCamera;
+        }
+        
         private ICameraTransition GetCameraSystem(ECameraSystem eCameraSystem)
         {
             return cameraSystemDictionary[eCameraSystem];
