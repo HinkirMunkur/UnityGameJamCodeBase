@@ -17,7 +17,7 @@ public class AudioTest : MonoBehaviour
     private int _musicVolume;
     private int _soundEffectVolume;
     
-    private void Awake()
+    private void Start()
     {
         _customSoundClick.OnClicked += PlayCustomSound;
         _importSoundClick.OnClicked += PlayImportSound;    
@@ -33,6 +33,9 @@ public class AudioTest : MonoBehaviour
         _soundEffectVolumeText.text = _soundEffectVolume.ToString();
 
         AudioManager.Instance.PlayMusic("TestMusic");
+        AudioManager.Instance.PlaySoundEffect("ImportSoundEffect");
+
+        AudioManager.Instance.PlayCustomSoundEffect("C4-D4-E4-C4-E4-C4-E4", "400-200-400-400-400-400-400");
     }
 
     private void OnDestroy() 

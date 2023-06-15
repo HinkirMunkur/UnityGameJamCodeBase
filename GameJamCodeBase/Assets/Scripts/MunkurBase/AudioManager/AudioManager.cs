@@ -20,15 +20,18 @@ namespace Munkur
     {
         [SerializeField]
         private Music[] _musicList;
+        private Dictionary<string, Music> _musicDict = new Dictionary<string, Music>();
 
         [SerializeField]
         private SoundEffect[] _soundEffectList;
+        private Dictionary<string, SoundEffect> _soundEffectDict = new Dictionary<string, SoundEffect>();
 
         [SerializeField]
         private AudioSource _musicAudioSource;
 
         [SerializeField]
-        private AudioSource _soundEffectAudioSource;
+        private int _soundEffectAudioSourceCount;
+        private List<AudioSource> _soundEffectAudioSources = new List<AudioSource>();
 
         [SerializeField]
         private AudioSource _customSoundEffectAudioSource;
@@ -42,8 +45,26 @@ namespace Munkur
         private bool _isMusicPlaying;
         public bool IsMusicPlaying => _isMusicPlaying;
 
-        private void Start()
+        public void Start()
         {
+            // Create music and sound effect dictionaries.
+            for (int i = 0; i < _musicList.Length; i++) 
+            {
+                _musicDict.Add(_musicList[i].audioName, _musicList[i]);
+            }
+
+            for (int i = 0; i < _soundEffectList.Length; i++) 
+            {
+                _soundEffectDict.Add(_soundEffectList[i].audioName, _soundEffectList[i]);
+            }
+
+            // Generate sound effect audio sources.
+            GenerateSoundEffectAudioSources();
+
+            // Set music and sound effect volumes.
+            SetMusicVolume(-10);
+            SetSoundEffectVolume(-10);
+
             // Declarations
             _isMusicPlaying = false;
 
@@ -67,28 +88,96 @@ namespace Munkur
                 ["E5"] = 12,
                 ["F5"] = 13
             };
+        }
 
-            SetMusicVolume(-10);
-            SetSoundEffectVolume(-10);
+        
+        /**
+        * <summary>
+        * This function is used to populate the _soundEffectAudioSources list.
+        * </summary>
+        */
+        private void GenerateSoundEffectAudioSources() 
+        {
+            for (int i = 0; i < _soundEffectAudioSourceCount; i++) 
+            {
+                AudioSource audioSourceToAdd = gameObject.AddComponent<AudioSource>();
+                _soundEffectAudioSources.Add(audioSourceToAdd);
+                audioSourceToAdd.playOnAwake = false;
+                audioSourceToAdd.outputAudioMixerGroup = _customSoundEffectAudioSource.outputAudioMixerGroup;
+            }
         }
 
         /**
         * <summary>
-        * This function should only be used when playing music.
+        * This function should only be used when playing sound effect.
         * <paramref name="audioName"/> is the name of the sound effect to be played.
         * </summary>
         */
         public void PlaySoundEffect(string audioName)
         {
-            foreach (SoundEffect soundEffect in _soundEffectList)
+            SoundEffect soundEffectToPlay = _soundEffectDict[audioName];
+
+            if (!soundEffectToPlay) 
             {
-                if (audioName.Equals(soundEffect.audioName))
+                Debug.LogError("Sound effect could not be found");
+                return;
+            }
+
+            if (!soundEffectToPlay.isLooping) 
+            {
+                _customSoundEffectAudioSource.PlayOneShot(soundEffectToPlay.audioClip, soundEffectToPlay.volume);
+            }
+
+            // Find a free sound effect audio source.
+            bool isThereSpace = false;
+
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                if (!soundEffectAudioSource.clip) 
                 {
-                    // Play the audio source
-                    _soundEffectAudioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
+                    isThereSpace = true;
+
+                    soundEffectAudioSource.clip = soundEffectToPlay.audioClip;
+                    soundEffectAudioSource.volume = soundEffectToPlay.volume;
+                    soundEffectAudioSource.loop = soundEffectToPlay.isLooping;
+
+                    soundEffectAudioSource.Play();
 
                     break;
-                }
+                } 
+            }
+
+            if (!isThereSpace) 
+            {
+                Debug.LogError("There is no more space for looping sound effects!");
+            }
+        }
+
+        /**
+        * <summary>
+        * This function should only be used when stopping sound effect.
+        * </summary>
+        */
+        public void StopSoundEffect(string audioName) 
+        {
+            SoundEffect soundEffectToStop = _soundEffectDict[audioName];
+
+            if (!soundEffectToStop) 
+            {
+                Debug.LogError("Sound effect could not be found");
+                return;
+            }
+
+            // Find the audio source holding the sound effect.
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                if (soundEffectAudioSource.clip == soundEffectToStop.audioClip) 
+                {
+                    soundEffectAudioSource.Stop();
+                    soundEffectAudioSource.clip = null;
+
+                    break;
+                } 
             }
         }
 
@@ -100,28 +189,25 @@ namespace Munkur
         */
         public void PlayMusic(string musicName)
         {
-            foreach (Music music in _musicList)
+            Music music = _musicDict[musicName];
+
+            if (!music) 
             {
-                if (musicName.Equals(music.audioName))
-                {
-                    // Assign the necessary information from the scriptable object
-                    _musicAudioSource.clip = music.audioClip;
-                    _musicAudioSource.volume = music.volume;
-                    _musicAudioSource.pitch = music.pitch;
-                    _musicAudioSource.loop = music.isLooping;
-
-                    // Play the audio source
-                    _musicAudioSource.Play();
-                    _isMusicPlaying = true;
-
-                    break;
-                }
+                Debug.LogError("Music could not be found!");
             }
+
+            _musicAudioSource.clip = music.audioClip;
+            _musicAudioSource.volume = music.volume;
+            _musicAudioSource.pitch = music.pitch;
+            _musicAudioSource.loop = music.isLooping;
+
+            _musicAudioSource.Play();
+            _isMusicPlaying = true;
         }
 
         /**
         * <summary>
-        * This function should only be used when playing music.
+        * This function should only be used when stopping music.
         * </summary>
         */
         public void StopMusic()
@@ -146,7 +232,7 @@ namespace Munkur
         /// <param name="newVolume"></param> is the new volume to be set for sound effects.
         public void SetSoundEffectVolume(float newVolume)
         {
-            _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
+            _customSoundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
         }
 
         /// <summary>
@@ -164,7 +250,10 @@ namespace Munkur
         /// <param name="mute"></param> is the flag for mute or unmute.
         public void MuteSoundEffect(bool mute)
         {
-            _soundEffectAudioSource.mute = mute;  
+            foreach (AudioSource soundEffectAudioSource in _soundEffectAudioSources) 
+            {
+                soundEffectAudioSource.mute = mute;
+            }
             _customSoundEffectAudioSource.mute = mute; 
         }
 
@@ -235,8 +324,56 @@ namespace Munkur
                     _customSoundEffectAudioSource.PlayOneShot(_blip);
 
                     currentNote = "";
+                    yield return new WaitForSeconds(timeBetweenNotes / 1000);
                 }
-                yield return new WaitForSeconds(timeBetweenNotes);
+            }
+        }
+
+        private IEnumerator PlayCustomSoundEffectCoroutine(string track, string timeTrack) 
+        {
+            // Convert to all upper letters
+            track = track.ToUpper() + "-";
+            timeTrack = timeTrack + "-";
+            string currentNote = "";
+            string currentTime = "";
+
+            Queue<float> timeIntervals = new Queue<float>();
+
+            for (int i = 0; i < timeTrack.Length; i++) 
+            {
+                if (timeTrack[i] != '-')
+                {
+                    currentTime += timeTrack[i];
+                }
+                else
+                {
+                    timeIntervals.Enqueue(float.Parse(currentTime));
+
+                    currentTime = "";
+                }
+            }
+            
+            
+            float timeBetweenNotes = 0f;
+
+
+            // For each note in the track...
+            for (int i = 0; i < track.Length; i++)
+            {
+
+                if (track[i] != '-')
+                {
+                    currentNote += track[i];
+                }
+                else
+                {
+                    timeBetweenNotes = timeIntervals.Dequeue();
+                    _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[currentNote]);
+                    _customSoundEffectAudioSource.PlayOneShot(_blip);
+
+                    currentNote = "";
+                    yield return new WaitForSeconds(timeBetweenNotes / 1000);
+                }
             }
         }
 
@@ -252,10 +389,15 @@ namespace Munkur
         ///     - Door Opening: "G3-B4"
         /// </summary>
         /// <param name="track"></param> is the set of notes.
-        /// <param name="timeBetweenNotes"></param> is the time interval between any two notes.
-        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .06f)
+        /// <param name="timeBetweenNotes"></param> is the time interval between any two notes in milliseconds.
+        public void PlayCustomSoundEffect(string track, float timeBetweenNotes = 200f)
         {
             StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
+        }
+
+        public void PlayCustomSoundEffect(string track, string timeTrack) 
+        {
+            StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeTrack));
         }
     }
 
