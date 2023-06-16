@@ -8,6 +8,7 @@ public class EventInputSystemManager : SingletonnPersistent<EventInputSystemMana
     [SerializeField] private bool _isDebugEnabled;
     [SerializeField] private List<string> _inputManagerAxesList;
     private Dictionary<string, Action> _inputManagerAxesDict;
+    public Dictionary<string, Action> InputManagerActions => _inputManagerAxesDict;
 
     private void Start() 
     {
