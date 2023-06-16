@@ -91,8 +91,8 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: space
-    altNegativeButton: 
-    altPositiveButton: 
+    altNegativeButton: b
+    altPositiveButton: a
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -485,3 +485,4 @@ InputManager:
     type: 2
     axis: 5
     joyNum: 0
+  m_UsePhysicalKeys: 0
