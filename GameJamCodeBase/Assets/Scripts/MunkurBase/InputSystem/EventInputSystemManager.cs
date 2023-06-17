@@ -5,13 +5,16 @@ using System;
 
 public class EventInputSystemManager : SingletonnPersistent<EventInputSystemManager>
 {    
-    [SerializeField] private bool _isDebugEnabled;
+    [SerializeField] private bool _isDebugEnabled; 
+    [SerializeField] private bool _isEventInputSystemEnabled;
     [SerializeField] private List<string> _inputManagerAxesList;
+    
     private Dictionary<string, Action> _inputManagerAxesDict;
     public Dictionary<string, Action> InputManagerActions => _inputManagerAxesDict;
 
-    private void Start() 
+    public override void Awake() 
     {
+        base.Awake();
         _inputManagerAxesDict = new Dictionary<string, Action>();
 
         foreach (string eventName in _inputManagerAxesList) 
@@ -22,15 +25,18 @@ public class EventInputSystemManager : SingletonnPersistent<EventInputSystemMana
 
     private void Update()
     {
-        foreach (string eventName in _inputManagerAxesList) 
+        if (_isEventInputSystemEnabled) 
         {
-            if (Input.GetButtonDown(eventName)) 
+            foreach (string eventName in _inputManagerAxesList) 
             {
-                _inputManagerAxesDict[eventName]?.Invoke();
-
-                if (_isDebugEnabled) 
+                if (Input.GetButtonDown(eventName)) 
                 {
-                    Debug.Log(eventName);
+                    _inputManagerAxesDict[eventName]?.Invoke();
+
+                    if (_isDebugEnabled) 
+                    {
+                        Debug.Log(eventName);
+                    }
                 }
             }
         }
